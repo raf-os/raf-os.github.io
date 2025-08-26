@@ -1,0 +1,14 @@
+{
+    "folder-color.pathColors": [
+        {
+            "folderPath": "github-page/src/app/styles/",
+            "color": "foldercolorizer.color_660099"
+        }
+    ],
+    "files.associations": {
+        "*.css": "tailwindcss"
+    },
+    "editor.quickSuggestions": {
+        "strings": "on"
+    },
+}
