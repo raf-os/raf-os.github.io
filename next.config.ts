@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const path = require("path");
 
 const nextConfig: NextConfig = {
+  output: 'export',
   turbopack: {
     root: path.join(__dirname, '..'),
   }
