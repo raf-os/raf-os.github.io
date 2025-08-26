@@ -76,7 +76,7 @@ jobs:
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
       - name: Add CNAME which wont work
-        run: echo "MYNAME.github.io" > out/CNAME
+        run: echo "raf-os.github.io" > out/CNAME
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
