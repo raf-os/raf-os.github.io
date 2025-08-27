@@ -1,4 +1,8 @@
 import { Engine, Scene, ArcRotateCamera, HemisphericLight, MeshBuilder, Vector3, type EngineOptions, type SceneOptions, type Camera } from "@babylonjs/core";
+import BuildingSpawner from "./objects/BuildingSpawner";
+
+import MeshLoader from "./singletons/MeshLoader";
+import WorldEnvironment from "./singletons/WorldEnvironment";
 
 interface AppProps {
     antialias?: boolean,
@@ -13,7 +17,6 @@ export default class App {
     engine: Engine;
     scene: Scene;
     mainCamera: Camera;
-    worldEnv: HemisphericLight;
 
     constructor(canvas: HTMLCanvasElement, opts: AppProps) {
         this._canvas = canvas;
@@ -22,15 +25,19 @@ export default class App {
         this.engine = new Engine(canvas, opts.antialias, opts.engineOptions, opts.adaptToDeviceRatio);
         this.scene = new Scene(this.engine, opts.sceneOptions);
 
-        this.mainCamera = new ArcRotateCamera("MainCamera", Math.PI / 2, Math.PI / 2, 10, Vector3.Zero(), this.scene);
-        this.mainCamera.attachControl(this.scene, true);
+        MeshLoader.setScene(this.scene);
+        MeshLoader.loadAssets();
 
-        this.worldEnv = new HemisphericLight("sun", new Vector3(1, 1, 0), this.scene);
+        WorldEnvironment.setup(this.scene);
 
-        const sphere = MeshBuilder.CreateSphere("sphere", { diameter: 1 }, this.scene);
-        sphere.position.y = 0.5;
+        this.mainCamera = new ArcRotateCamera("MainCamera", Math.PI / 2, Math.PI / 2.1, 100, new Vector3(0, 10, 0), this.scene);
+        //this.mainCamera.attachControl(this.scene, true);
 
-        const ground = MeshBuilder.CreateGround("ground", { width: 20, height: 20 }, this.scene);
+        this.scene.onReadyObservable.addOnce(() => {
+            const buildingSpawner = new BuildingSpawner(this.scene);
+
+            const ground = MeshBuilder.CreateGround("ground", { width: 200, height: 200 }, this.scene);
+        });
 
         if (window) {
             window.addEventListener("resize", this.resize);
@@ -43,8 +50,8 @@ export default class App {
         return this._canvas;
     }
 
-    resize() {
-        this.engine.resize();
+    resize = () => {
+        this.scene.getEngine().resize();
     }
 
     kill() {
