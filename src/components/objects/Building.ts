@@ -6,7 +6,6 @@ import { v4 as uuid } from "uuid";
 export default class Building extends TransformNode {
     observer: Observer<Scene>;
     mesh!: InstancedMesh;
-    _moveSpeed: number = 0.01;
 
     constructor(scene: Scene, initialPos: Vector3) {
         super(`BUILDING-${uuid()}`, scene);
@@ -28,7 +27,7 @@ export default class Building extends TransformNode {
 
     updatePosition() {
         const deltaTime = this.getScene().deltaTime;
-        const newPos = this.position.x - this._moveSpeed * deltaTime;
+        const newPos = this.position.x - WorldEnvironment.moveSpeed * deltaTime;
         this.position.x = newPos;
 
         if (this.getAbsolutePosition().x < WorldEnvironment.worldBoundaries.min.x) {

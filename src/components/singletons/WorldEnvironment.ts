@@ -10,6 +10,7 @@ type TWorldBoundaries = {
 class _WorldEnvironment {
     scene!: Scene;
     sunLight!: HemisphericLight;
+    moveSpeed: number = 10 / 1000;
     worldBoundaries: TWorldBoundaries = {
         min: new Vector3(-100, 0, -100),
         max: new Vector3(100, 100, 100)
