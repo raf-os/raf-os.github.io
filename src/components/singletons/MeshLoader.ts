@@ -12,7 +12,6 @@ type TMeshes = {
 export class _MeshLoader {
     scene!: Scene;
     _HighRise!: AssetContainer;
-    _HighRiseMaterial!: any;
 
     constructor() {
         if (instance) {
