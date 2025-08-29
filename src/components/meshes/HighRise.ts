@@ -1,5 +1,4 @@
 import { type Scene, LoadAssetContainerAsync } from "@babylonjs/core";
-import { IMeshObject } from "./IMeshObject";
 
 const HighRise = async (scene: Scene) => {
     const container = await LoadAssetContainerAsync("/assets/HighRise.glb", scene);

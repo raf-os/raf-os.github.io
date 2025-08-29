@@ -23,6 +23,10 @@ export default class Building extends TransformNode {
     setMesh(mesh: any) {
         this.mesh = mesh;
         mesh.parent = this;
+
+        const randomRotation = Math.round(Math.random() * 3) * Math.PI / 2;
+
+        this.mesh.rotate(new Vector3(0, 1, 0), randomRotation);
     }
 
     updatePosition() {

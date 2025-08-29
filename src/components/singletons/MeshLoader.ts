@@ -1,4 +1,4 @@
-import { Scene, LoadAssetContainerAsync, type Mesh, type AssetContainer } from "@babylonjs/core";
+import { Scene, LoadAssetContainerAsync, Color3, type Mesh, type AssetContainer, PBRMaterial } from "@babylonjs/core";
 import { registerBuiltInLoaders } from "@babylonjs/loaders/dynamic";
 
 let instance: _MeshLoader;
@@ -12,6 +12,7 @@ type TMeshes = {
 export class _MeshLoader {
     scene!: Scene;
     _HighRise!: AssetContainer;
+    _HighRiseMaterial!: any;
 
     constructor() {
         if (instance) {
@@ -41,7 +42,10 @@ export class _MeshLoader {
     }
 
     request = {
-        HighRise: () => { return this._HighRise.instantiateModelsToScene().rootNodes[0]; },
+        HighRise: () => {
+            const instance = this._HighRise.instantiateModelsToScene().rootNodes[0];
+            return instance;
+        },
     }
 }
 

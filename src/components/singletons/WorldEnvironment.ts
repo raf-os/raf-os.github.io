@@ -1,4 +1,4 @@
-import { Scene, HemisphericLight, Vector3 } from "@babylonjs/core";
+import { Scene, HemisphericLight, Vector3, Color3 } from "@babylonjs/core";
 
 let instance: _WorldEnvironment;
 
@@ -28,6 +28,7 @@ class _WorldEnvironment {
     setup(scene: Scene) {
         this.scene = scene;
         this.sunLight = new HemisphericLight("sun", new Vector3(1, 1, 0), this.scene);
+        this.sunLight.groundColor = new Color3(1, 0, 0);
     }
 }
 
