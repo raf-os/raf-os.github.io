@@ -1,6 +1,7 @@
-import { Engine, Scene, ArcRotateCamera, Animation, CubicEase, EasingFunction, MeshBuilder, Vector3, type EngineOptions, type SceneOptions, type Camera } from "@babylonjs/core";
+import { Engine, Scene, type EngineOptions, type SceneOptions } from "@babylonjs/core";
 import BuildingSpawner from "./objects/BuildingSpawner";
 import ViewCamera from "./objects/ViewCamera";
+import Ground from "./objects/Ground";
 
 import MeshLoader from "./singletons/MeshLoader";
 import WorldEnvironment from "./singletons/WorldEnvironment";
@@ -31,14 +32,13 @@ export default class App {
 
         WorldEnvironment.setup(this.scene);
         
-        const cameraInitialHeight = 80;
         this.mainCamera = new ViewCamera(this.scene);
         //this.mainCamera.attachControl(this.scene, true);
 
         this.scene.onReadyObservable.addOnce(() => {
             const buildingSpawner = new BuildingSpawner(this.scene);
 
-            const ground = MeshBuilder.CreateGround("ground", { width: 200, height: 200 }, this.scene);
+            const ground = new Ground(this.scene);
 
             this.mainCamera.descentAnim();
         });

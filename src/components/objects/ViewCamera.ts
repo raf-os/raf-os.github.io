@@ -7,7 +7,7 @@ export default class ViewCamera {
     cameraInitialHeight: number = 80;
     cameraFinalHeight: number = 10;
     animDuration: number = 8;
-    framerate: number = 8;
+    framerate: number = 30;
 
     lowerCameraAnim!: Animation;
 
