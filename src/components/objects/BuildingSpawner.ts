@@ -3,8 +3,9 @@ import WorldEnvironment from "../singletons/WorldEnvironment";
 import { type Scene, Vector3, TransformNode } from "@babylonjs/core";
 
 const maxLanes = 6;
-const minTime = 1500;
-const maxTime = 3000;
+const spawnTime = 2000;
+const spawnChance = 0.75;
+const spawnOffset = 10;
 
 export default class BuildingSpawner extends TransformNode {
     lanes: Lane[] = [];
@@ -35,16 +36,20 @@ export class Lane extends TransformNode {
     beginTimer() {
         setTimeout(
             () => { this.spawnBuilding() },
-            Math.random() * (maxTime - minTime) + minTime
+            spawnTime
         );
     };
 
     spawnBuilding() {
         if (this.getScene()) {
-            const newPos = Vector3.Zero();
-            newPos.copyFrom(this.position);
-            const building = new Building(this.getScene(), newPos);
-            this.addChild(building);
+            const willSpawn: boolean = Math.random() <= spawnChance;
+            if (willSpawn) {
+                const newPos = Vector3.Zero();
+                newPos.copyFrom(this.position);
+                newPos.x += (spawnOffset / 2) + (Math.random() * spawnOffset);
+                const building = new Building(this.getScene(), newPos);
+                this.addChild(building);
+            }
         }
         this.beginTimer();
     }
