@@ -1,6 +1,5 @@
-import { Scene, type Mesh } from "@babylonjs/core";
-
-import HighRise from "../meshes/HighRise";
+import { Scene, LoadAssetContainerAsync, type Mesh, type AssetContainer } from "@babylonjs/core";
+import { registerBuiltInLoaders } from "@babylonjs/loaders/dynamic";
 
 let instance: _MeshLoader;
 
@@ -12,13 +11,15 @@ type TMeshes = {
 // mesh loader singleton
 export class _MeshLoader {
     scene!: Scene;
-    _HighRise!: Mesh;
+    _HighRise!: AssetContainer;
 
     constructor() {
         if (instance) {
             throw new Error("Attempted to create multiple MeshLoader instances.");
         }
         instance = this;
+
+        registerBuiltInLoaders();
     }
 
     getInstance() {
@@ -29,19 +30,18 @@ export class _MeshLoader {
         this.scene = scene;
     }
 
-    loadAssets() {
-        this._HighRise = HighRise(this.scene as Scene);
-        this._HighRise.isVisible = false;
+    async loadAssets(callback?: () => void) {
+        this._HighRise = await LoadAssetContainerAsync("/assets/HighRise.glb", this.scene);
+
+        this.onAssetsLoaded(callback);
     }
 
-    private _clone(mesh: Mesh) {
-        const newInstance = mesh.createInstance("meshClone");
-        newInstance.isVisible = true;
-        return newInstance;
+    onAssetsLoaded(callback?: () => void) {
+        callback?.();
     }
 
     request = {
-        HighRise: () => { return this._clone(this._HighRise) },
+        HighRise: () => { return this._HighRise.instantiateModelsToScene().rootNodes[0]; },
     }
 }
 

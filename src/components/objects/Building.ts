@@ -20,7 +20,7 @@ export default class Building extends TransformNode {
         this.position = initialPos;
     }
 
-    setMesh(mesh: Building['mesh']) {
+    setMesh(mesh: any) {
         this.mesh = mesh;
         mesh.parent = this;
     }

@@ -26,21 +26,19 @@ export default class App {
 
         this.engine = new Engine(canvas, opts.antialias, opts.engineOptions, opts.adaptToDeviceRatio);
         this.scene = new Scene(this.engine, opts.sceneOptions);
+        this.mainCamera = new ViewCamera(this.scene);
 
         MeshLoader.setScene(this.scene);
-        MeshLoader.loadAssets();
+        MeshLoader.loadAssets(() => {
+            WorldEnvironment.setup(this.scene);
 
-        WorldEnvironment.setup(this.scene);
-        
-        this.mainCamera = new ViewCamera(this.scene);
-        //this.mainCamera.attachControl(this.scene, true);
+            this.scene.onReadyObservable.addOnce(() => {
+                const buildingSpawner = new BuildingSpawner(this.scene);
 
-        this.scene.onReadyObservable.addOnce(() => {
-            const buildingSpawner = new BuildingSpawner(this.scene);
+                const ground = new Ground(this.scene);
 
-            const ground = new Ground(this.scene);
-
-            this.mainCamera.descentAnim();
+                this.mainCamera.descentAnim();
+            });
         });
 
         if (window) {
