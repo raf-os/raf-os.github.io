@@ -11,7 +11,7 @@ export default class Building extends TransformNode {
         super(`BUILDING-${uuid()}`, scene);
         this.gotoInitialPosition(initialPos);
 
-        this.setMesh(MeshLoader.request.HighRise());
+        this.setMesh(MeshLoader.request.TestBuilding());
 
         this.observer = scene.onBeforeRenderObservable.add(() => this.updatePosition());
     }

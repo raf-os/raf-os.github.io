@@ -12,6 +12,7 @@ type TMeshes = {
 export class _MeshLoader {
     scene!: Scene;
     _HighRise!: AssetContainer;
+    _TestBuilding!: AssetContainer;
 
     constructor() {
         if (instance) {
@@ -32,6 +33,7 @@ export class _MeshLoader {
 
     async loadAssets(callback?: () => void) {
         this._HighRise = await LoadAssetContainerAsync("/assets/HighRise.glb", this.scene);
+        this._TestBuilding = await LoadAssetContainerAsync("/assets/testBuilding.glb", this.scene);
 
         this.onAssetsLoaded(callback);
     }
@@ -45,6 +47,10 @@ export class _MeshLoader {
             const instance = this._HighRise.instantiateModelsToScene().rootNodes[0];
             return instance;
         },
+
+        TestBuilding: () => {
+            return this._TestBuilding.instantiateModelsToScene().rootNodes[0];
+        }
     }
 }
 

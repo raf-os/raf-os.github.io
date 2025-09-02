@@ -5,8 +5,8 @@ export default class ViewCamera {
     cameraObj: ArcRotateCamera;
 
     cameraInitialHeight: number = 80;
-    cameraFinalHeight: number = 10;
-    animDuration: number = 8;
+    cameraFinalHeight: number = 5;
+    animDuration: number = 2;
     framerate: number = 30;
 
     lowerCameraAnim!: Animation;
@@ -14,7 +14,7 @@ export default class ViewCamera {
     constructor(scene: Scene) {
         this.scene = scene;
 
-        this.cameraObj = new ArcRotateCamera("MainCamera", Math.PI / 2, Math.PI / 2.1, 100, new Vector3(0, this.cameraInitialHeight, 0), this.scene);
+        this.cameraObj = new ArcRotateCamera("MainCamera", Math.PI / 2, Math.PI / 2.1, 40, new Vector3(0, this.cameraInitialHeight, 0), this.scene);
 
         this._setupAnims();
     }

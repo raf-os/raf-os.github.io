@@ -4,7 +4,7 @@ import { type Scene, Vector3, TransformNode } from "@babylonjs/core";
 
 const maxLanes = 6;
 const spawnTime = 2000;
-const spawnChance = 0.75;
+const spawnChance = 0.9;
 const spawnOffset = 10;
 
 export default class BuildingSpawner extends TransformNode {
