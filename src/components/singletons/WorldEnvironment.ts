@@ -1,4 +1,4 @@
-import { Scene, HemisphericLight, Vector3, Color3 } from "@babylonjs/core";
+import { Scene, HemisphericLight, Vector3, CubeTexture, Color3 } from "@babylonjs/core";
 
 let instance: _WorldEnvironment;
 
@@ -25,10 +25,13 @@ class _WorldEnvironment {
 
     getInstance() { return this; }
 
-    setup(scene: Scene) {
+    async setup(scene: Scene) {
         this.scene = scene;
         this.sunLight = new HemisphericLight("sun", new Vector3(1, 1, 0), this.scene);
         this.sunLight.groundColor = new Color3(1, 0, 0);
+
+        const envTexture = new CubeTexture("/assets/sky/skybox", this.scene);
+        this.scene.createDefaultSkybox(envTexture, false, 1000);
     }
 }
 
