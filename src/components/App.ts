@@ -28,10 +28,10 @@ export default class App {
         this.scene = new Scene(this.engine, opts.sceneOptions);
         this.mainCamera = new ViewCamera(this.scene);
 
+        WorldEnvironment.setup(this.scene);
+
         MeshLoader.setScene(this.scene);
         MeshLoader.loadAssets(() => {
-            WorldEnvironment.setup(this.scene);
-
             this.scene.onReadyObservable.addOnce(() => {
                 const buildingSpawner = new BuildingSpawner(this.scene);
 
