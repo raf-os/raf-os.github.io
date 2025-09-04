@@ -34,7 +34,10 @@ export class _MeshLoader {
         const arrayBuffer = await Tools.LoadFileAsync(path, true);
         const assetBlob = new Blob([arrayBuffer]);
         const assetUrl = URL.createObjectURL(assetBlob);
-        return LoadAssetContainerAsync(assetUrl, this.scene, { pluginExtension: ".glb" });
+        const container = await LoadAssetContainerAsync(assetUrl, this.scene, { pluginExtension: ".glb" });
+        const entries = container.instantiateModelsToScene(); // load them into memory
+        entries.rootNodes.map(node => node.setEnabled(false)); // make them invisible
+        return container;
     }
 
     async loadAssets(callback?: () => void) {
@@ -49,7 +52,8 @@ export class _MeshLoader {
 
     request = {
         TestBuilding: () => {
-            return this._TestBuilding.instantiateModelsToScene().rootNodes[0];
+            const mesh = this._TestBuilding.instantiateModelsToScene().rootNodes[0];
+            return mesh;
         }
     }
 }

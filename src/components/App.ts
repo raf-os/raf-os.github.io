@@ -1,4 +1,4 @@
-import { Engine, Scene, type EngineOptions, type SceneOptions } from "@babylonjs/core";
+import { Engine, Scene, Observable, type EngineOptions, type SceneOptions } from "@babylonjs/core";
 import BuildingSpawner from "./objects/BuildingSpawner";
 import ViewCamera from "./objects/ViewCamera";
 import Ground from "./objects/Ground";
@@ -13,19 +13,28 @@ interface AppProps {
     sceneOptions?: SceneOptions,
 }
 
+interface IAppObservables {
+    onAssetsLoaded: Observable<void>;
+}
+
 export default class App {
     private _canvas: HTMLCanvasElement;
     private _opts: AppProps;
     engine: Engine;
     scene: Scene;
     mainCamera: ViewCamera;
+    observables: IAppObservables;
 
-    constructor(canvas: HTMLCanvasElement, opts: AppProps) {
+    constructor(canvas: HTMLCanvasElement, opts: AppProps) {    
         this._canvas = canvas;
         this._opts = opts;
 
         this.engine = new Engine(canvas, opts.antialias, opts.engineOptions, opts.adaptToDeviceRatio);
         this.scene = new Scene(this.engine, opts.sceneOptions);
+
+        this.observables = {
+            onAssetsLoaded: new Observable(undefined, true),
+        }
         
         this.mainCamera = new ViewCamera(this.scene);
 
@@ -34,10 +43,11 @@ export default class App {
         WorldEnvironment.setup(this.scene);
         MeshLoader.setScene(this.scene);
         MeshLoader.loadAssets(() => {
-            
                 const buildingSpawner = new BuildingSpawner(this.scene);
 
                 const ground = new Ground(this.scene);
+
+                this.observables.onAssetsLoaded.notifyObservers();
 
                 this.mainCamera.descentAnim();
             });

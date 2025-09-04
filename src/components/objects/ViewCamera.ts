@@ -1,4 +1,4 @@
-import { ArcRotateCamera, Animation, CubicEase, EasingFunction, Vector3, type Scene } from "@babylonjs/core";
+import { ArcRotateCamera, Animation, CubicEase, EasingFunction, Vector3, setAndStartTimer, type Scene } from "@babylonjs/core";
 
 export default class ViewCamera {
     scene: Scene;
@@ -43,8 +43,15 @@ export default class ViewCamera {
     }
 
     descentAnim() {
-        setTimeout(() => {
-            this.scene.beginAnimation(this.cameraObj, 0, this.animDuration * this.framerate, false);
-        }, 2000);
+        setAndStartTimer({
+            timeout: 2000,
+            contextObservable: this.scene.onBeforeRenderObservable,
+            breakCondition: () => {
+                return this.scene.isDisposed;
+            },
+            onEnded: () => {
+                this.scene.beginAnimation(this.cameraObj, 0, this.animDuration * this.framerate, false);
+            }
+        });
     }
 }
