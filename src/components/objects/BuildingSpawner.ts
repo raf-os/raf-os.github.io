@@ -1,9 +1,9 @@
 import Building from "./Building";
 import WorldEnvironment from "../singletons/WorldEnvironment";
-import { type Scene, Vector3, TransformNode, Observable } from "@babylonjs/core";
+import { type Scene, Vector3, TransformNode, Observable, setAndStartTimer } from "@babylonjs/core";
 
 const maxLanes = 6;
-const spawnTime = 2000;
+const spawnTime = 1500;
 const spawnChance = 0.9;
 const spawnOffset = 10;
 
@@ -12,7 +12,7 @@ const spawnOffset = 10;
 export default class BuildingSpawner extends TransformNode {
     lanes: Lane[] = [];
     spawnObservable: Observable<void>;
-    spawnTimer: NodeJS.Timeout | undefined;
+    spawnTimer: ReturnType<typeof setAndStartTimer> = null;
 
     constructor(scene: Scene) {
         super("buildingSpawner", scene);
@@ -24,14 +24,20 @@ export default class BuildingSpawner extends TransformNode {
             this.addChild(newLane);
         }
 
+        // TODO: Generate initial random building grid
+
         this.signalSpawn();
     }
 
     signalSpawn() {
         this.spawnObservable.notifyObservers();
-        this.spawnTimer = setTimeout(() => {
-            this.signalSpawn();
-        }, spawnTime);
+        setAndStartTimer({
+            timeout: spawnTime,
+            contextObservable: this.getScene().onBeforeRenderObservable,
+            onEnded: () => {
+                this.signalSpawn();
+            }
+        });
     }
 }
 
@@ -44,7 +50,11 @@ export class Lane extends TransformNode {
         this.lPos = lanePos;
         const wb = WorldEnvironment.worldBoundaries;
         const _lPos = Math.round(lanePos * (wb.max.z - wb.min.z) / maxLanes);
-        this.position = new Vector3(wb.max.x, 0, wb.min.z + _lPos);
+        this.position = new Vector3(
+            wb.max.x + Math.sin(lanePos) * (Math.PI / 4) * 10,
+            0,
+            wb.min.z + _lPos
+        );
 
         this._observable = observable;
         this._observable.add(() => this.spawnBuilding());

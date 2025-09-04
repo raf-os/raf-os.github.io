@@ -12,8 +12,8 @@ class _WorldEnvironment {
     sunLight!: HemisphericLight;
     moveSpeed: number = 10 / 1000;
     worldBoundaries: TWorldBoundaries = {
-        min: new Vector3(-100, 0, -30),
-        max: new Vector3(100, 100, 30)
+        min: new Vector3(-75, 0, -30),
+        max: new Vector3(75, 100, 30)
     };
 
     constructor() {

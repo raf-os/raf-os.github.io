@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Scene, EngineOptions, SceneOptions } from "@babylonjs/core";
+import { Observable } from "@babylonjs/core";
 import App from "./App";
 import { cn } from "@lib/utils";
 
@@ -28,6 +29,11 @@ export default function BabylonApp({
     const appObj = useRef<App>(null);
     const [ isAppReady, setIsAppReady ] = useState<boolean>(false);
     const [ appErrorMessage, setAppErrorMessage ] = useState<React.ReactNode>(null);
+    const [ showLoadingOverlay, setShowLoadingOverlay ] = useState<boolean>(true);
+
+    const hideLoadingOverlay = () => {
+        setShowLoadingOverlay(false);
+    }
 
     useEffect(() => {
         const { current: canvas } = reactCanvas;
@@ -60,9 +66,7 @@ export default function BabylonApp({
                 {...rest}
             />
 
-            { (isAppReady === false) && (
-                <LoadingScreen />
-            )}
+            { (showLoadingOverlay && !appErrorMessage) && <LoadingOverlay loadingStatus={isAppReady} disposeFn={hideLoadingOverlay} /> }
 
             { (appErrorMessage && isAppReady) && (
                 <div className="absolute top-0 left-0 p-4 text-sm">
@@ -75,10 +79,48 @@ export default function BabylonApp({
     )
 }
 
-function LoadingScreen() {
+function LoadingOverlay({
+    loadingStatus,
+    disposeFn
+}: {
+    loadingStatus: boolean,
+    disposeFn: () => void,
+}) {
+    const [ loadBuffer, setLoadBuffer ] = useState<boolean>(loadingStatus);
+    const loadOverlayRef = useRef<HTMLDivElement>(null);
+
+    const fadedOut = () => {
+        disposeFn();
+    }
+
+    useEffect(() => {
+        if (!loadOverlayRef.current) return;
+
+        if (loadingStatus === true && loadBuffer === false) {
+            setLoadBuffer(true);
+            loadOverlayRef.current.addEventListener(
+                "transitionend",
+                () => fadedOut(),
+                { once: true }
+            );
+        }
+    }, [loadingStatus]);
+
     return (
-        <div className="absolute top-0 left-0 w-full h-full bg-black">
-            loading...
-        </div>
+            <div
+                ref={loadOverlayRef}
+                className={cn(
+                    "absolute flex items-center justify-center top-0 left-0 w-full h-full transition-colors duration-4000",
+                    loadingStatus?"bg-transparent":"bg-black"
+                )}
+            >
+                { !loadingStatus && (
+                    <div
+                        className="p-2 text-lg font-semibold"
+                    >
+                        Loading app...
+                    </div>
+                )}
+            </div>
     )
 }
