@@ -1,4 +1,4 @@
-import { Scene, LoadAssetContainerAsync, Color3, type Mesh, type AssetContainer, PBRMaterial } from "@babylonjs/core";
+import { Scene, LoadAssetContainerAsync, Tools, type Mesh, type AssetContainer } from "@babylonjs/core";
 import { registerBuiltInLoaders } from "@babylonjs/loaders/dynamic";
 
 let instance: _MeshLoader;
@@ -30,8 +30,15 @@ export class _MeshLoader {
         this.scene = scene;
     }
 
+    async loadToMemory(path: string) {
+        const arrayBuffer = await Tools.LoadFileAsync(path, true);
+        const assetBlob = new Blob([arrayBuffer]);
+        const assetUrl = URL.createObjectURL(assetBlob);
+        return LoadAssetContainerAsync(assetUrl, this.scene, { pluginExtension: ".glb" });
+    }
+
     async loadAssets(callback?: () => void) {
-        this._TestBuilding = await LoadAssetContainerAsync("/assets/testBuilding.glb", this.scene);
+        this._TestBuilding = await this.loadToMemory("/assets/testBuilding.glb");
 
         this.onAssetsLoaded(callback);
     }
