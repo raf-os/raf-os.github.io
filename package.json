@@ -12,6 +12,7 @@
     "@babylonjs/core": "^8.24.0",
     "@babylonjs/loaders": "^8.25.0",
     "clsx": "^2.1.1",
+    "motion": "^12.23.12",
     "next": "15.5.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
