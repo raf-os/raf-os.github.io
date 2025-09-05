@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import type { Scene, EngineOptions, SceneOptions } from "@babylonjs/core";
-import { Observable } from "@babylonjs/core";
 import App from "./App";
+import { GlobalAppContext } from "@/app/page";
 import { cn } from "@lib/utils";
 
 interface BabylonAppProps extends React.ComponentPropsWithoutRef<'canvas'> {
@@ -31,6 +31,8 @@ export default function BabylonApp({
     const [ appErrorMessage, setAppErrorMessage ] = useState<React.ReactNode>(null);
     const [ showLoadingOverlay, setShowLoadingOverlay ] = useState<boolean>(true);
 
+    const { updateAppObj } = useContext(GlobalAppContext);
+
     const hideLoadingOverlay = () => {
         setShowLoadingOverlay(false);
     }
@@ -46,11 +48,13 @@ export default function BabylonApp({
         }
 
         appObj.current = new App(canvas, { antialias: true });
+        updateAppObj(appObj.current);
 
         appObj.current.observables.onAssetsLoaded.addOnce(() => setIsAppReady(true));
 
         return () => {
             appObj.current?.kill();
+            updateAppObj(undefined);
         }
     }, [antialias, engineOptions, adaptToDeviceRatio, sceneOptions, onRender, onSceneReady]);
 
