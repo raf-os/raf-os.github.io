@@ -11,5 +11,6 @@ export const geistMono = Geist_Mono({
 });
 
 export const jersey10 = Jersey_10({
-  weight: '400'
+  weight: '400',
+  subsets: ["latin"],
 });
