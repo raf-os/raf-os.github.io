@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@babylonjs/core": "^8.24.0",
+    "@babylonjs/gui": "^8.26.0",
     "@babylonjs/loaders": "^8.25.0",
     "clsx": "^2.1.1",
     "motion": "^12.23.12",

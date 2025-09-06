@@ -6,6 +6,7 @@ import { cn } from "../lib/utils";
 import { useContext, useEffect, useState, useRef, useCallback } from "react";
 import { useAnimate, motion, useMotionValue, useTransform } from "motion/react";
 import { steps } from "motion";
+import TextShaderApp from "@/components/TextShaderApp";
 
 export type TitleScreenProps = React.ComponentPropsWithRef<'div'> & {
     forceMount: boolean;
@@ -85,17 +86,9 @@ export default function TitleScreen({
                 <div
                     className={`text-[64px] md:text-[96px] text-center leading-none border-1 border-neutral-950/50 bg-neutral-950/20 px-4 py-2 rounded-lg ${jersey10.className}`}
                     data-slot="title-name"
-                    style={{ opacity: 0, transform: "translateY(48px)", boxShadow: "0 2px 6px -1px rgb(0 0 0 / 50%) inset" }}
+                    style={{ opacity: 0, boxShadow: "0 2px 6px -1px rgb(0 0 0 / 50%) inset" }}
                 >
-                    <span
-                        className="bg-clip-text text-transparent"
-                        style={{
-                            backgroundColor: "#B50792",
-                            backgroundImage: "linear-gradient(to bottom, #35077D 25%, #B50792 55%, #FFCD05 100%)",
-                        }}
-                    >
-                        <TextWackyShader />
-                    </span>
+                    <TextWackyShader />
                 </div>
 
                 <div
@@ -124,40 +117,10 @@ export default function TitleScreen({
     )
 }
 
-const vertexShaderSource = `#version 300 es
-in vec2 a_position;
-in vec2 a_texcoord;
-
-uniform vec2 u_resolution;
-
-out vec2 v_texcoord;
-
-void main() {
-    vec2 zeroToOne = a_position / u_resolution;
-    vec2 zeroToTwo = zeroToOne * 2.0;
-    vec2 clipSpace = zeroToTwo - 1.0;
-    gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
-
-    v_texcoord = a_texcoord;
-}
-`;
-
-const fragmentShaderSource = `#version 300 es
-precision highp float;
-
-in vec2 v_texcoord;
-
-uniform sampler2D u_texture;
-
-out vec4 outColor;
-
-void main() {
-    outColor = texture(u_texture, v_texcoord);
-}`;
-
 function TextWackyShader() {
     const textTexture = useRef<HTMLCanvasElement>(null);
     const webglCanvas = useRef<HTMLCanvasElement>(null);
+    const appObj = useRef<TextShaderApp>(null);
 
     useEffect(() => {
         const canvas = webglCanvas.current;
@@ -167,13 +130,27 @@ function TextWackyShader() {
         const gl = canvas.getContext("webgl2");
         if (!gl) return;
 
-        
-    }, [webglCanvas, textTexture]);
+        appObj.current = new TextShaderApp(canvas, textTexture.current);
+
+        const handleResize = () => {
+            canvas.width = (textTexture.current as HTMLCanvasElement).width;
+            canvas.height = (textTexture.current as HTMLCanvasElement).height;
+        }
+
+        handleResize();
+
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+            appObj.current?.kill();
+        }
+    }, [webglCanvas.current, textTexture.current]);
 
     return (
         <>
             <TextCanvasTexture cRef={textTexture} />
-            <canvas ref={webglCanvas} width={600} height={300} />
+            <canvas ref={webglCanvas} />
         </>
     )
 }
@@ -193,7 +170,7 @@ function TextCanvasTexture({ cRef }: { cRef: React.RefObject<HTMLCanvasElement |
         if (ctx) {
             ctx.font = fontStyle;
             canvas.width = getPowerOfTwo(ctx.measureText(desiredText).width);
-            canvas.height = getPowerOfTwo(2 * textSize);
+            canvas.height = getPowerOfTwo(1 * textSize);
 
             ctx.font = fontStyle;
             ctx.fillStyle = "#ffffff";
@@ -201,10 +178,10 @@ function TextCanvasTexture({ cRef }: { cRef: React.RefObject<HTMLCanvasElement |
             ctx.textBaseline = "middle";
             ctx.fillText(desiredText, canvas.width / 2, canvas.height / 2);
         }
-    }, []);
+    }, [canvasRef.current]);
 
     return (
-        <canvas ref={canvasRef} style={{display:"none"}} />
+        <canvas ref={canvasRef} style={{display: "none"}} />
     )
 }
 
