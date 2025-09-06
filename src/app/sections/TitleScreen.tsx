@@ -33,17 +33,17 @@ export default function TitleScreen({
     const strCountTarget = useTransform(strCount, (latest) => Math.round(latest));
     const strDisplay = useTransform(strCountTarget, (latest) => currentRenderText.current.slice(0, latest));
 
-    const fadeInAnim = useCallback(() => {
-        setIsShowing(true);
-        triggeredAnimation.current = true;
-        animSequence();
-    }, []);
-
     const animSequence = async () => {
         await animate('[data-slot="title-name"]', { opacity: 1, y: 0 }, { duration: 0.5, y: { duration: 1, ease: "circOut" } });
         await animate('[data-slot="title-console"]', { opacity: 1, width: "100%" }, { delay: 1, duration: 0.5 } );
         await typingAnimation(typeWriterText);
     }
+
+    const fadeInAnim = useCallback(() => {
+        setIsShowing(true);
+        triggeredAnimation.current = true;
+        animSequence();
+    }, [animSequence]);
 
     const typingAnimation = async (stringLines: string[]) => {
         for (const line of stringLines) {
@@ -68,7 +68,7 @@ export default function TitleScreen({
         } else if (ctx.appObj !== undefined) {
             ctx.appObj.observables.onAssetsLoaded.addOnce(() => fadeInAnim());
         }
-    }, [forceMount, ctx.appObj]);
+    }, [forceMount, ctx.appObj, fadeInAnim]);
 
     return (
         <div
@@ -145,7 +145,7 @@ function TextWackyShader() {
             window.removeEventListener("resize", handleResize);
             appObj.current?.kill();
         }
-    }, [webglCanvas.current, textTexture.current]);
+    }, [webglCanvas, textTexture]);
 
     return (
         <>
@@ -178,7 +178,7 @@ function TextCanvasTexture({ cRef }: { cRef: React.RefObject<HTMLCanvasElement |
             ctx.textBaseline = "middle";
             ctx.fillText(desiredText, canvas.width / 2, canvas.height / 2);
         }
-    }, [canvasRef.current]);
+    }, [canvasRef, cRef, fontStyle]);
 
     return (
         <canvas ref={canvasRef} style={{display: "none"}} />
