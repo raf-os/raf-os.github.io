@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useRef, useState, useContext } from "react";
+import { useEffect, useRef, useState, useContext, useCallback } from "react";
 import type { Scene, EngineOptions, SceneOptions } from "@babylonjs/core";
 import App from "./App";
-import { GlobalAppContext } from "@/app/page";
+import { GlobalAppContext } from "@/app/GlobalContext";
 import { cn } from "@lib/utils";
 
 interface BabylonAppProps extends React.ComponentPropsWithoutRef<'canvas'> {
@@ -56,7 +56,7 @@ export default function BabylonApp({
             appObj.current?.kill();
             updateAppObj(undefined);
         }
-    }, [antialias, engineOptions, adaptToDeviceRatio, sceneOptions, onRender, onSceneReady]);
+    }, [antialias, engineOptions, adaptToDeviceRatio, sceneOptions, onRender, onSceneReady, updateAppObj]);
 
     return (
         <div className="flex w-full h-dvh fixed top-0 left-0 -z-50">
@@ -93,9 +93,9 @@ function LoadingOverlay({
     const [ loadBuffer, setLoadBuffer ] = useState<boolean>(loadingStatus);
     const loadOverlayRef = useRef<HTMLDivElement>(null);
 
-    const fadedOut = () => {
+    const fadedOut = useCallback(() => {
         disposeFn();
-    }
+    }, [disposeFn]);
 
     useEffect(() => {
         if (!loadOverlayRef.current) return;
@@ -108,7 +108,7 @@ function LoadingOverlay({
                 { once: true }
             );
         }
-    }, [loadingStatus]);
+    }, [loadingStatus, loadBuffer, fadedOut]);
 
     return (
             <div
