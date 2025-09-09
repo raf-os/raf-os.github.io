@@ -1,4 +1,4 @@
-import { Scene, LoadAssetContainerAsync, Tools, type Mesh, type AssetContainer } from "@babylonjs/core";
+import { Scene, LoadAssetContainerAsync, type Mesh, type AssetContainer } from "@babylonjs/core";
 import { registerBuiltInLoaders } from "@babylonjs/loaders/dynamic";
 
 let instance: _MeshLoader;
@@ -31,10 +31,7 @@ export class _MeshLoader {
     }
 
     async loadToMemory(path: string) {
-        const arrayBuffer = await Tools.LoadFileAsync(path, true);
-        const assetBlob = new Blob([arrayBuffer]);
-        const assetUrl = URL.createObjectURL(assetBlob);
-        const container = await LoadAssetContainerAsync(assetUrl, this.scene, { pluginExtension: ".glb" });
+        const container = await LoadAssetContainerAsync(path, this.scene, { pluginExtension: ".glb" });
         const entries = container.instantiateModelsToScene(); // load them into memory
         entries.rootNodes.map(node => node.setEnabled(false)); // make them invisible
         return container;
