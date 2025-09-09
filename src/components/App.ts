@@ -69,6 +69,6 @@ export default class App {
 
     kill() {
         window.removeEventListener("resize", this.resize);
-        //this.engine.dispose();
+        this.engine.dispose();
     }
 }

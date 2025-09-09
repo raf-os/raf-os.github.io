@@ -56,7 +56,7 @@ export default function BabylonApp({
             appObj.current?.kill();
             updateAppObj(undefined);
         }
-    }, [antialias, engineOptions, adaptToDeviceRatio, sceneOptions, onRender, onSceneReady, updateAppObj]);
+    }, []);
 
     return (
         <div className="flex w-full h-dvh fixed top-0 left-0 -z-50">
