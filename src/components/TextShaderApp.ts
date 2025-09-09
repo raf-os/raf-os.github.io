@@ -157,9 +157,9 @@ export default class TextShaderApp {
 
             this.tImg.source = imageDataUrl;
             this.tImg.width = 1;
-            this.tImg.height = 1;
+            this.tImg.height = 0.5;
             //this.tImg.stretch = Image.STRETCH_NONE;
-            this.tImg.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
+            this.tImg.verticalAlignment = Control.VERTICAL_ALIGNMENT_CENTER;
             this.tImg.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_CENTER;
             this.gui.update();
             this.observables.onTextureUpdate.notifyObservers();
