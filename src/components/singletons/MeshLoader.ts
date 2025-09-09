@@ -38,7 +38,7 @@ export class _MeshLoader {
     }
 
     async loadAssets(callback?: () => void) {
-        this._TestBuilding = await this.loadToMemory("/assets/testBuilding.glb");
+        this._TestBuilding = await this.loadToMemory("./assets/testBuilding.glb");
 
         this.onAssetsLoaded(callback);
     }
