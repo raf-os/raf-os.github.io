@@ -84,9 +84,11 @@ export default function TitleScreen({
                 data-slot="animatable-container"
             >
                 <div
-                    className={`text-[64px] md:text-[96px] text-center leading-none border-1 border-neutral-950/50 bg-neutral-950/20 px-4 py-2 rounded-lg ${jersey10.className}`}
+                    className={`px-4 py-2 rounded-lg bg-gray-800 border-2 border-green-400 relative`}
                     data-slot="title-name"
-                    style={{ opacity: 0, boxShadow: "0 2px 6px -1px rgb(0 0 0 / 50%) inset" }}
+                    style={{
+                        opacity: 0,
+                    }}
                 >
                     <TextWackyShader />
                 </div>
@@ -158,7 +160,7 @@ function TextWackyShader() {
     return (
         <>
             <TextCanvasTexture cRef={textTexture} texUpdateFn={updateTexture} />
-            <canvas ref={webglCanvas} />
+            <canvas ref={webglCanvas} className="outline-none" />
         </>
     )
 }
@@ -187,8 +189,13 @@ function TextCanvasTexture({ cRef, texUpdateFn }: { cRef: React.RefObject<HTMLCa
             canvas.width = getPowerOfTwo(ctx.measureText(desiredText).width);
             canvas.height = getPowerOfTwo(1 * textSize);
 
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0.1, "#31E4EB");
+            gradient.addColorStop(0.6, "#B03FE0");
+            gradient.addColorStop(1, "#FFEFA6");
+
             ctx.font = fontStyle;
-            ctx.fillStyle = "#ffffff";
+            ctx.fillStyle = gradient;
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             ctx.fillText(desiredText, canvas.width / 2, canvas.height / 2);
@@ -200,7 +207,7 @@ function TextCanvasTexture({ cRef, texUpdateFn }: { cRef: React.RefObject<HTMLCa
     }, [canvasRef, cRef, texUpdateFn]);
 
     return (
-        <canvas ref={canvasRef} style={{ display: "none" }} />
+        <canvas ref={canvasRef} className="" />
     )
 }
 
