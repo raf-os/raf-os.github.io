@@ -33,8 +33,6 @@ export default function TitleScreen({
     const strCountTarget = useTransform(strCount, (latest) => Math.round(latest));
     const strDisplay = useTransform(strCountTarget, (latest) => currentRenderText.current.slice(0, latest));
 
-    
-
     const fadeInAnim = useCallback(() => {
         const animSequence = async () => {
             await animate('[data-slot="title-name"]', { opacity: 1, y: 0 }, { duration: 0.5, y: { duration: 1, ease: "circOut" } });
@@ -124,6 +122,12 @@ function TextWackyShader() {
     const webglCanvas = useRef<HTMLCanvasElement>(null);
     const appObj = useRef<TextShaderApp>(null);
 
+    const updateTexture = useCallback(() => {
+        if (!appObj.current) return;
+
+        appObj.current.updateCanvasTexture();
+    }, []);
+
     useEffect(() => {
         const canvas = webglCanvas.current;
         if (!canvas) return;
@@ -142,34 +146,43 @@ function TextWackyShader() {
         handleResize();
 
         window.addEventListener("resize", handleResize);
+        const observer = appObj.current.observables.onTextureUpdate.add(() => handleResize());
 
         return () => {
             window.removeEventListener("resize", handleResize);
+            appObj.current?.observables.onTextureUpdate.remove(observer);
             appObj.current?.kill();
         }
     }, [webglCanvas, textTexture]);
 
     return (
         <>
-            <TextCanvasTexture cRef={textTexture} />
+            <TextCanvasTexture cRef={textTexture} texUpdateFn={updateTexture} />
             <canvas ref={webglCanvas} />
         </>
     )
 }
 
-function TextCanvasTexture({ cRef }: { cRef: React.RefObject<HTMLCanvasElement | null> }) {
+function TextCanvasTexture({ cRef, texUpdateFn }: { cRef: React.RefObject<HTMLCanvasElement | null>, texUpdateFn: () => void }) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     const desiredText = "Rafael Aguiar";
     const textSize = 48;
-    const fontStyle = `${textSize}px ${jersey10.style.fontFamily}`;
+    const fontStyle = `${textSize}px shaderFontJ10`;
 
     useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        cRef.current = canvas;
-        const ctx = canvas.getContext("2d");
-        if (ctx) {
+        const loadAndDraw = async () => {
+            const canvas = canvasRef.current;
+            if (!canvas) return;
+
+            cRef.current = canvas;
+            const ctx = canvas.getContext("2d");
+            if (!ctx) return;
+
+            const font = new FontFace("shaderFontJ10", "url('fonts/Jersey10.ttf')", { weight: '400' });
+            await font.load();
+            document.fonts.add(font);
+
             ctx.font = fontStyle;
             canvas.width = getPowerOfTwo(ctx.measureText(desiredText).width);
             canvas.height = getPowerOfTwo(1 * textSize);
@@ -179,11 +192,15 @@ function TextCanvasTexture({ cRef }: { cRef: React.RefObject<HTMLCanvasElement |
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             ctx.fillText(desiredText, canvas.width / 2, canvas.height / 2);
+
+            texUpdateFn();
         }
-    }, [canvasRef, cRef, fontStyle]);
+
+        loadAndDraw();
+    }, [canvasRef, cRef, texUpdateFn]);
 
     return (
-        <canvas ref={canvasRef} style={{display: "none"}} />
+        <canvas ref={canvasRef} style={{ display: "none" }} />
     )
 }
 

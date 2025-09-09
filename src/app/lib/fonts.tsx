@@ -13,6 +13,7 @@ export const geistMono = Geist_Mono({
 export const jersey10 = Jersey_10({
   weight: '400',
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const redHatMono = Red_Hat_Mono({
