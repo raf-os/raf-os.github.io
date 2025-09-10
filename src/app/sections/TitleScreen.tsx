@@ -37,6 +37,7 @@ export default function TitleScreen({
 
     const fadeInAnim = useCallback(() => {
         const animSequence = async () => {
+            await new Promise(resolve => setTimeout(resolve, 4000));
             await animate('[data-slot="title-console"]', { opacity: 1, width: "100%", height: "100%", y: 0 }, { delay: 2, duration: 0.5, ease: "circOut" });
             await animate('[data-slot="title-name"]', { opacity: 1, y: 0 }, { duration: 1 });
             await typingAnimation(typeWriterText, { showEndline: true, typingDelay: 0.25 });

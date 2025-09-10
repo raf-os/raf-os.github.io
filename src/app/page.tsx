@@ -25,7 +25,7 @@ export default function Home() {
 	return (
 		<GlobalAppContext.Provider value={ctx}>
 			<div className="relative w-full flex flex-col">
-				<BabylonApp antialias adaptToDeviceRatio/>
+				<BabylonApp antialias />
 				<Navbar />
 
 				<TitleScreen forceMount={true} />

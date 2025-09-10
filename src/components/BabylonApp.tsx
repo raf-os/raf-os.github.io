@@ -47,7 +47,8 @@ export default function BabylonApp({
             return;
         }
 
-        appObj.current = new App(canvas, { antialias: true });
+        appObj.current = new App(canvas, { antialias: true, adaptToDeviceRatio: adaptToDeviceRatio });
+        appObj.current.resize();
         updateAppObj(appObj.current);
 
         appObj.current.observables.onAssetsLoaded.addOnce(() => setIsAppReady(true));
@@ -64,7 +65,7 @@ export default function BabylonApp({
                 id="webglCanvas"
                 ref={reactCanvas}
                 className={cn(
-                    "outline-none grow-1",
+                    "outline-none w-full h-full",
                     className
                 )}
                 {...rest}
