@@ -1,4 +1,4 @@
-import { Scene, HemisphericLight, Vector3, CubeTexture, Color3 } from "@babylonjs/core";
+import { Scene, HemisphericLight, Vector3, CubeTexture, Color3, GlowLayer } from "@babylonjs/core";
 
 let instance: _WorldEnvironment;
 
@@ -15,6 +15,7 @@ class _WorldEnvironment {
         min: new Vector3(-75, 0, -30),
         max: new Vector3(75, 100, 30)
     };
+    glowLayer!: GlowLayer;
 
     constructor() {
         if (instance) {
@@ -32,6 +33,9 @@ class _WorldEnvironment {
 
         const envTexture = new CubeTexture("/assets/sky/skybox", this.scene);
         this.scene.createDefaultSkybox(envTexture, false, 1000);
+
+        this.glowLayer = new GlowLayer("glow", scene);
+        this.glowLayer.intensity = 0.5;
     }
 }
 
