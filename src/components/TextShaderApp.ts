@@ -27,10 +27,10 @@ in vec2 vUV;
 
 uniform sampler2D textureSampler;
 uniform float time;
-uniform vec2 u_resolution;
 
 out vec4 fragColor;
 
+// Noise + fBM algorithm credit: thebookofshaders.com
 float random (in vec2 st) {
     return fract(sin(dot(st.xy,
                          vec2(12.9898,78.233)))*
@@ -56,12 +56,9 @@ float noise (in vec2 st) {
 
 #define OCTAVES 4
 float fbm (in vec2 st) {
-    // Initial values
     float value = 0.0;
     float amplitude = .5;
     float frequency = 0.;
-    //
-    // Loop of octaves
     for (int i = 0; i < OCTAVES; i++) {
         value += amplitude * noise(st);
         st *= 2.;
@@ -72,7 +69,6 @@ float fbm (in vec2 st) {
 
 void main(void) {
     vec2 uv = vUV;
-
     uv.x += fbm(vUV * 8. + time * .2) * .05;
     uv.y = 1.0 - vUV.y;
     vec4 color = texture(textureSampler, uv);
