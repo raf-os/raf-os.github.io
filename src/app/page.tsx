@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import type App from "@/components/App";
+import Navbar from "@/components/layout/Navbar";
 import TitleScreen from "./sections/TitleScreen";
 import { GlobalAppContext, DefaultAppContext, type IGlobalAppContext } from "./GlobalContext";
+import DialogPortal from "@/components/layout/DialogPortal";
 
 import BabylonApp from "@/components/BabylonApp";
 
@@ -22,10 +24,13 @@ export default function Home() {
 
 	return (
 		<GlobalAppContext.Provider value={ctx}>
-			<div className="relative flex flex-col">
+			<div className="relative w-full flex flex-col">
 				<BabylonApp antialias adaptToDeviceRatio/>
+				<Navbar />
 
-				<TitleScreen forceMount={false} />
+				<TitleScreen forceMount={true} />
+
+				<DialogPortal />
 			</div>
 		</GlobalAppContext.Provider>
 	)

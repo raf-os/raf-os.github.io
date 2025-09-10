@@ -22,7 +22,7 @@ export default function TitleScreen({
         "Fullstack web developer",
         "Mechanical engineer",
         "(...)",
-        "Download remaining data as attachment? (Y | N)"
+        "Full profile attached below"
     ];
 
     const triggeredAnimation = useRef<boolean>(false);
@@ -39,12 +39,7 @@ export default function TitleScreen({
         const animSequence = async () => {
             await animate('[data-slot="title-console"]', { opacity: 1, width: "100%", height: "100%", y: 0 }, { delay: 2, duration: 0.5, ease: "circOut" });
             await animate('[data-slot="title-name"]', { opacity: 1, y: 0 }, { duration: 1 });
-            await typingAnimation(["Users.loadProfile('Rafael Aguiar')"], { typingSpeed: 0.05, typingDelay: 1 });
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            await typingAnimation(typeWriterText, { prefix: "  " });
-            await typingAnimation(["Y"], { typingSpeed: 0.05, typingDelay: 1 });
-            await typingAnimation(["...."], { prefix: "  ", typingSpeed: 0.5, typingDelay: 1 });
-            await typingAnimation(["DONE"], { prefix: "  ", typingSpeed: 0.02, typingDelay: 0, showEndline: true });
+            await typingAnimation(typeWriterText, { showEndline: true, typingDelay: 0.25 });
         }
         
         setIsShowing(true);
@@ -53,7 +48,7 @@ export default function TitleScreen({
     }, []);
 
     const typingAnimation = async (stringLines: string[], opts?: { showEndline?: boolean, typingSpeed?: number, typingDelay?: number, prefix?: string }) => {
-        const typingSpeed = opts?.typingSpeed || 0.02;
+        const typingSpeed = opts?.typingSpeed || 0.05;
         const typingDelay = opts?.typingDelay || 0;
         const prefix = opts?.prefix || "> ";
         for (const line of stringLines) {

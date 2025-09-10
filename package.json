@@ -13,6 +13,7 @@
     "@babylonjs/gui": "^8.26.0",
     "@babylonjs/loaders": "^8.25.0",
     "clsx": "^2.1.1",
+    "lucide-react": "^0.543.0",
     "motion": "^12.23.12",
     "next": "15.5.0",
     "react": "19.1.0",

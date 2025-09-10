@@ -11,3 +11,15 @@ body {
 	font-family: Arial, Helvetica, sans-serif;
 	position: relative;
 }
+
+@utility dialog-styling {
+	& a {
+		color: var(--color-emerald-400);
+		cursor: pointer;
+		font-weight: 500;
+
+		&:hover, &:active {
+			color: var(--color-emerald-600);
+		}
+	}
+}
