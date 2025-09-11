@@ -42,7 +42,7 @@ export default class App {
             WorldEnvironment.setup(this.scene);
             MeshLoader.setScene(this.scene);
             MeshLoader.loadAssets(() => {
-                const buildingSpawner = new BuildingSpawner(this.scene);
+                //const buildingSpawner = new BuildingSpawner(this.scene);
 
                 const ground = new Ground(this.scene);
 

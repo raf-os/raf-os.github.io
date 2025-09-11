@@ -57,7 +57,8 @@ export default function BabylonApp({
             appObj.current?.kill();
             updateAppObj(undefined);
         }
-    }, [adaptToDeviceRatio, updateAppObj]);
+        // eslint-disable-next-line
+    }, []);
 
     return (
         <div className="flex w-full h-dvh fixed top-0 left-0 -z-50">
