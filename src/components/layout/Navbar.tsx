@@ -2,9 +2,10 @@
 
 import { cn } from "@/app/lib/utils";
 import DialogManager from "@/components/singletons/DialogManager";
-import { useState, useEffect, useLayoutEffect, useRef } from "react";
+import { useState, useLayoutEffect, useRef } from "react";
 
 import { Menu as MenuIcon, X as CloseIcon } from "lucide-react";
+import Link from "next/link";
 
 const GITHUB_LINK = "https://github.com/raf-os";
 const EMAIL_ADDR = "mailto:rafael.aguiar93@outlook.com";
@@ -30,9 +31,9 @@ export default function Navbar() {
                 <div
                     className="flex h-full self-start items-center"
                 >
-                    <a href="/" className="font-bold">
+                    <Link href="/" className="font-bold">
                         raf-os.github.io
-                    </a>
+                    </Link>
                 </div>
 
                 <NavlinkCollection>

@@ -18,13 +18,6 @@ export default function TitleScreen({
     style,
     ...rest
 }: TitleScreenProps) {
-    const typeWriterText = [
-        "Fullstack web developer",
-        "Mechanical engineer",
-        "(...)",
-        "Full profile attached below"
-    ];
-
     const triggeredAnimation = useRef<boolean>(false);
     const [ isShowing, setIsShowing ] = useState<boolean>(forceMount);
     const [ scope, animate ] = useAnimate();
@@ -36,6 +29,32 @@ export default function TitleScreen({
     const strDisplay = useTransform(strCountTarget, (latest) => currentRenderText.current.slice(0, latest));
 
     const fadeInAnim = useCallback(() => {
+        const typeWriterText = [
+            "Fullstack web developer",
+            "Mechanical engineer",
+            "(...)",
+            "Full profile attached below"
+        ];
+
+        const typingAnimation = async (stringLines: string[], opts?: { showEndline?: boolean, typingSpeed?: number, typingDelay?: number, prefix?: string }) => {
+            const typingSpeed = opts?.typingSpeed || 0.05;
+            const typingDelay = opts?.typingDelay || 0;
+            const prefix = opts?.prefix || "> ";
+            for (const line of stringLines) {
+                const lineSize = line.length;
+                const _nl = currentRenderText.current.length + prefix.length;
+                currentRenderText.current += prefix + line;
+                strCount.jump(_nl);
+                const fullSize = lineSize + _nl;
+                await animate(strCount, fullSize, { duration: lineSize * typingSpeed, delay: typingDelay, ease: "linear" });
+                currentRenderText.current += "\n";
+                strCount.jump(fullSize + 2);
+            }
+            
+            if (opts?.showEndline === true) currentRenderText.current += "> ";
+            strCount.jump(currentRenderText.current.length);
+        }
+
         const animSequence = async () => {
             await new Promise(resolve => setTimeout(resolve, 4000));
             await animate('[data-slot="title-console"]', { opacity: 1, width: "100%", height: "100%", y: 0 }, { delay: 2, duration: 0.5, ease: "circOut" });
@@ -46,26 +65,8 @@ export default function TitleScreen({
         setIsShowing(true);
         triggeredAnimation.current = true;
         animSequence();
-    }, []);
-
-    const typingAnimation = async (stringLines: string[], opts?: { showEndline?: boolean, typingSpeed?: number, typingDelay?: number, prefix?: string }) => {
-        const typingSpeed = opts?.typingSpeed || 0.05;
-        const typingDelay = opts?.typingDelay || 0;
-        const prefix = opts?.prefix || "> ";
-        for (const line of stringLines) {
-            const lineSize = line.length;
-            const _nl = currentRenderText.current.length + prefix.length;
-            currentRenderText.current += prefix + line;
-            strCount.jump(_nl);
-            const fullSize = lineSize + _nl;
-            await animate(strCount, fullSize, { duration: lineSize * typingSpeed, delay: typingDelay, ease: "linear" });
-            currentRenderText.current += "\n";
-            strCount.jump(fullSize + 2);
-        }
-        
-        if (opts?.showEndline === true) currentRenderText.current += "> ";
-        strCount.jump(currentRenderText.current.length);
-    }
+        // eslint-disable-next-line
+    }, [animate]);
 
     useEffect(() => {
         if (triggeredAnimation.current) return;
@@ -175,8 +176,7 @@ function TextCanvasTexture({ cRef, texUpdateFn }: { cRef: React.RefObject<HTMLCa
 
     const desiredText = "Rafael Aguiar";
     const textSize = 48;
-    const fontStyle = `${textSize}px shaderFontJ10`;
-
+    
     useEffect(() => {
         const loadAndDraw = async () => {
             const canvas = canvasRef.current;
@@ -186,6 +186,7 @@ function TextCanvasTexture({ cRef, texUpdateFn }: { cRef: React.RefObject<HTMLCa
             const ctx = canvas.getContext("2d");
             if (!ctx) return;
 
+            const fontStyle = `${textSize}px shaderFontJ10`;
             const font = new FontFace("shaderFontJ10", "url('fonts/Jersey10.ttf')", { weight: '400' });
             await font.load();
             document.fonts.add(font);

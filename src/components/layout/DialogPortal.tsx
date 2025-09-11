@@ -42,7 +42,7 @@ export default function DialogPortal() {
         return () => {
             DialogManager.disconnectObserver(observer.current);
         }
-    });
+    }, []);
 
     return isMounted? createPortal((
         <AnimatePresence>

@@ -36,4 +36,5 @@ class DialogManager {
     }
 }
 
-export default new DialogManager();
+const DM = new DialogManager();
+export default DM;
