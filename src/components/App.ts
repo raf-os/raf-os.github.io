@@ -25,7 +25,7 @@ export default class App {
     mainCamera: ViewCamera;
     observables: IAppObservables;
 
-    constructor(canvas: HTMLCanvasElement, opts: AppProps) {    
+    constructor(canvas: HTMLCanvasElement, opts: AppProps) {
         this._canvas = canvas;
         this._opts = opts;
 
