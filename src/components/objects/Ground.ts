@@ -16,6 +16,7 @@ uniform float scale;
 // Varying
 out vec2 vUV;
 out vec3 vPos;
+out float heightVal;
 
 vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
 
@@ -62,14 +63,16 @@ float fbm (in vec2 st) {
 
 void main(void) {
     float tt = time;
-    vec4 mPos = world * vec4(position - vec3(time * scale, 0., 0.), 1.);
+    vec4 mPos = world * vec4(position - vec3(time * 2., 0., 0.), 1.);
     vec2 vMov = (mPos.xz);
     
-    mPos.y = fbm(vMov * .1);
+    float myHeight = (fbm(vMov * .05) * 2. - 1.) * 4.;
+    mPos.y = myHeight;
     gl_Position = worldViewProjection * vec4(position + vec3(0., mPos.y, 0.), 1.0);
 
     vUV = uv;
     vPos = position;
+    heightVal = myHeight;
 }`;
 
 const fragmentShaderSample = `#version 300 es
@@ -78,18 +81,23 @@ precision highp float;
 
 in vec2 vUV;
 in vec3 vPos;
+in float heightVal;
 
 uniform float time;
+uniform float scale;
 
 out vec4 fragColor;
 
 void main(void) {
-    vec2 coord = vUV * 0.2;
+    vec2 coord = vUV * 1.;
     vec2 grid = abs(fract(coord - 0.5) - 0.5) / fwidth(coord);
-    float line = min(grid.x, grid.y) / 2.;
+    float line = min(grid.x, grid.y) / 4.;
     float color = 1.0 - min(line, 1.0);
-    vec4 col = vec4(vec3(color) * vec3(0.7, 0., 1.0), 1.);
-    fragColor = mix(vec4(0.1, 0.1, 0.125, 1.), col, color);
+    float distMix = clamp((vPos.z + 32.) / 32., 0.6, 1.);
+    float hParam = clamp(heightVal * 0.25 + 1., 0., 1.);
+    vec4 gColor = mix(vec4(0.7, 0., 0.9, 1.), vec4(0.4, 0.8, 1., 1.), hParam);
+    vec4 col = mix(vec4(1.) * 1., vec4(vec3(color), 1.) * gColor, distMix);
+    fragColor = mix(vec4(0.12, 0.12, 0.15, 1.), col * 1.5, color);
 }`;
 
 export default class Ground {

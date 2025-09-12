@@ -1,11 +1,11 @@
-import { ArcRotateCamera, Animation, CubicEase, EasingFunction, Vector3, setAndStartTimer, type Scene } from "@babylonjs/core";
+import { UniversalCamera, Animation, CubicEase, EasingFunction, Vector3, setAndStartTimer, type Scene } from "@babylonjs/core";
 
 export default class ViewCamera {
     scene: Scene;
-    cameraObj: ArcRotateCamera;
+    cameraObj: UniversalCamera;
 
-    cameraInitialHeight: number = 80;
-    cameraFinalHeight: number = 2;
+    cameraInitialHeight: number = 42;
+    cameraFinalHeight: number = 1;
     animDuration: number = 2;
     framerate: number = 30;
 
@@ -14,8 +14,9 @@ export default class ViewCamera {
     constructor(scene: Scene) {
         this.scene = scene;
 
-        this.cameraObj = new ArcRotateCamera("MainCamera", Math.PI * 1.5, Math.PI / 2, 32, new Vector3(0, this.cameraInitialHeight, 0), this.scene);
-        //this.cameraObj.fov = Math.PI / 2;
+        this.cameraObj = new UniversalCamera("MainCamera", new Vector3(0, this.cameraInitialHeight, 32), this.scene);
+        this.cameraObj.setTarget(new Vector3(0, this.cameraInitialHeight, 0));
+        this.cameraObj.fov = Math.PI / 2;
         // DEBUG ONLY:
         // this.cameraObj.attachControl(this.scene.getEngine().getRenderingCanvas(), true);
 
@@ -24,7 +25,7 @@ export default class ViewCamera {
 
     private _setupAnims() {
         const framerate: number = 30;
-        this.lowerCameraAnim = new Animation("lowerCameraAnim", "target.y", framerate, Animation.ANIMATIONTYPE_FLOAT);
+        this.lowerCameraAnim = new Animation("lowerCameraAnim", "position.y", framerate, Animation.ANIMATIONTYPE_FLOAT);
 
         const keyFrames = [{
             frame: 0,
