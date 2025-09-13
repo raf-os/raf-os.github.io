@@ -3,7 +3,7 @@ import BuildingSpawner from "./objects/BuildingSpawner";
 import ViewCamera from "./objects/ViewCamera";
 import Ground from "./objects/Ground";
 
-import MeshLoader from "./singletons/MeshLoader";
+//import MeshLoader from "./singletons/MeshLoader";
 import WorldEnvironment from "./singletons/WorldEnvironment";
 
 interface AppProps {
@@ -40,16 +40,11 @@ export default class App {
 
         this.scene.onReadyObservable.addOnce(() => {
             WorldEnvironment.setup(this.scene);
-            MeshLoader.setScene(this.scene);
-            MeshLoader.loadAssets(() => {
-                //const buildingSpawner = new BuildingSpawner(this.scene);
+            const ground = new Ground(this.scene);
 
-                const ground = new Ground(this.scene);
+            this.observables.onAssetsLoaded.notifyObservers();
 
-                this.observables.onAssetsLoaded.notifyObservers();
-
-                this.mainCamera.descentAnim();
-            });
+            this.mainCamera.descentAnim();
         });
 
         if (window) {

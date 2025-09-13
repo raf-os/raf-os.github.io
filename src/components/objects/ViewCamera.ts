@@ -4,9 +4,9 @@ export default class ViewCamera {
     scene: Scene;
     cameraObj: UniversalCamera;
 
-    cameraInitialHeight: number = 42;
-    cameraFinalHeight: number = 1;
-    animDuration: number = 2;
+    cameraInitialHeight: number = 128;
+    cameraFinalHeight: number = 2;
+    animDuration: number = 8;
     framerate: number = 30;
 
     lowerCameraAnim!: Animation;
@@ -16,7 +16,7 @@ export default class ViewCamera {
 
         this.cameraObj = new UniversalCamera("MainCamera", new Vector3(0, this.cameraInitialHeight, 32), this.scene);
         this.cameraObj.setTarget(new Vector3(0, this.cameraInitialHeight, 0));
-        this.cameraObj.fov = Math.PI / 2;
+        this.cameraObj.fov = (75 / 180) * Math.PI;
         // DEBUG ONLY:
         // this.cameraObj.attachControl(this.scene.getEngine().getRenderingCanvas(), true);
 
