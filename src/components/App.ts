@@ -2,6 +2,7 @@ import { Engine, Scene, Observable, type EngineOptions, type SceneOptions } from
 import BuildingSpawner from "./objects/BuildingSpawner";
 import ViewCamera from "./objects/ViewCamera";
 import Ground from "./objects/Ground";
+import Sun from "./objects/Sun";
 
 //import MeshLoader from "./singletons/MeshLoader";
 import WorldEnvironment from "./singletons/WorldEnvironment";
@@ -38,9 +39,13 @@ export default class App {
         
         this.mainCamera = new ViewCamera(this.scene);
 
+        WorldEnvironment.setup(this.scene);
+        const ground = new Ground(this.scene);
+        const sun = new Sun(this.scene);
+
         this.scene.onReadyObservable.addOnce(() => {
-            WorldEnvironment.setup(this.scene);
-            const ground = new Ground(this.scene);
+            WorldEnvironment.glowLayer.addIncludedOnlyMesh(ground.mesh);
+            WorldEnvironment.glowLayer.addIncludedOnlyMesh(sun.mesh);
 
             this.observables.onAssetsLoaded.notifyObservers();
 

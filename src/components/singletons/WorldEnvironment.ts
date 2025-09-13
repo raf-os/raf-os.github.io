@@ -26,7 +26,7 @@ class _WorldEnvironment {
 
     getInstance() { return this; }
 
-    async setup(scene: Scene) {
+    setup(scene: Scene) {
         this.scene = scene;
         this.sunLight = new HemisphericLight("sun", new Vector3(1, 1, 0), this.scene);
         this.sunLight.groundColor = new Color3(1, 0, 0);
@@ -35,7 +35,7 @@ class _WorldEnvironment {
         this.scene.createDefaultSkybox(envTexture, false, 1000);
 
         this.glowLayer = new GlowLayer("glow", scene);
-        this.glowLayer.intensity = 0.5;
+        this.glowLayer.intensity = 1.;
     }
 }
 
