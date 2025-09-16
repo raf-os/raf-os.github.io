@@ -57,8 +57,9 @@ export default function TitleScreen({
 
         const animSequence = async () => {
             //await new Promise(resolve => setTimeout(resolve, 1000));
-            await animate('[data-slot="title-console"]', { opacity: 1, width: "100%", height: "100%", y: 0 }, { delay: 2, duration: 0.5, ease: "circOut" });
-            await animate('[data-slot="title-name"]', { opacity: 1, y: 0 }, { duration: 1 });
+            animate('[data-slot="animatable-container"]', { y: 0 }, { duration: 1, ease: "circOut" });
+            await animate('[data-slot="title-name"]', { opacity: 1 }, { duration: 2 });
+            await animate('[data-slot="title-console"]', { opacity: 1, width: "100%", height: "auto", y: 0 }, { delay: 1, duration: 0.5, ease: "circOut" });
             await typingAnimation(typeWriterText, { showEndline: true, typingDelay: 0.25 });
         }
         
@@ -80,42 +81,45 @@ export default function TitleScreen({
     return (
         <div
             className={cn(
-                "flex flex-col w-full h-dvh items-center justify-center relative"
+                "flex flex-col w-full h-dvh items-center relative py-8 overflow-hidden"
             )}
             ref={scope}
             {...rest}
         >
             <div
-                className="flex flex-col gap-4 items-center relative p-2 w-full md:p-0 md:w-[800px]"
-                style={{ visibility: isShowing? "visible" : "hidden" }}
+                className="flex flex-col justify-baseline gap-4 relative p-2 w-full h-full md:p-0 md:w-[800px]"
+                style={{ visibility: isShowing? "visible" : "hidden", transform: "translateY(32px)" }}
                 data-slot="animatable-container"
             >
                 <div
-                    className={`block rounded-lg text-base font-medium bg-green-400 border-2 border-green-400 text-green-400 overflow-hidden ${redHatMono.className}`}
-                    data-slot="title-console"
-                    style={{ opacity: 0, width: 0, height: 0, transform: "translateY(48px)" }}
+                    className="flex flex-col items-center w-full relative h-2/5"
+                    data-slot="title-name"
+                    style={{ opacity: 0 }}
                 >
+                    <TextWackyShader />
+                </div>
+                <div className="flex flex-col w-full h-2/5 z-1">
                     <div
-                        className="w-full text-sm font-semibold px-2 py-1 bg-green-400 text-gray-800"
+                        className={`flex flex-col rounded-lg text-base font-medium bg-green-400 border-2 border-green-400 text-green-400 overflow-hidden ${redHatMono.className}`}
+                        data-slot="title-console"
+                        style={{ opacity: 0, width: 0, height: 0, transform: "translateY(48px)" }}
                     >
-                        Terminal: User Profile
-                    </div>
-                    <div className="px-3 py-2 overflow-hidden bg-gray-800 rounded-md">
                         <div
-                            className="flex flex-col items-center relative self-center"
-                            data-slot="title-name"
-                            style={{ opacity: 0 }}
+                            className="w-full text-sm font-semibold px-2 py-1 text-gray-800"
                         >
-                            <TextWackyShader />
+                            Terminal: User Profile
                         </div>
-                        <motion.div className="inline whitespace-pre-wrap">{strDisplay}</motion.div>
-                        <motion.p
-                            animate={{ opacity: [1, 0, 1] }}
-                            transition={{ duration: 1, repeat: Infinity, ease: steps(2) }}
-                            className="inline"
-                        >
-                            _
-                        </motion.p>
+                        <div className="px-3 py-2 overflow-hidden bg-gray-800 rounded-md">
+                            
+                            <motion.div className="inline whitespace-pre-wrap">{strDisplay}</motion.div>
+                            <motion.p
+                                animate={{ opacity: [1, 0, 1] }}
+                                transition={{ duration: 1, repeat: Infinity, ease: steps(2) }}
+                                className="inline"
+                            >
+                                _
+                            </motion.p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -164,7 +168,7 @@ function TextWackyShader() {
     return (
         <>
             <TextCanvasTexture cRef={textTexture} texUpdateFn={updateTexture} />
-            <div className="overflow-hidden flex items-start h-[96px]">
+            <div className="absolute top-[72px] translate-x-[20px] overflow-hidden flex items-center h-full">
                 <canvas ref={webglCanvas} className="outline-none" />
             </div>
         </>
@@ -175,7 +179,7 @@ function TextCanvasTexture({ cRef, texUpdateFn }: { cRef: React.RefObject<HTMLCa
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     const desiredText = "Rafael Aguiar";
-    const textSize = 48;
+    const textSize = 80;
     
     useEffect(() => {
         const loadAndDraw = async () => {
@@ -187,7 +191,8 @@ function TextCanvasTexture({ cRef, texUpdateFn }: { cRef: React.RefObject<HTMLCa
             if (!ctx) return;
 
             const fontStyle = `${textSize}px shaderFontJ10`;
-            const font = new FontFace("shaderFontJ10", "url('fonts/Jersey10.ttf')", { weight: '400' });
+            // FONT CREDITS: https://www.dafont.com/suntowns.font
+            const font = new FontFace("shaderFontJ10", "url('fonts/Suntowns.ttf')", { weight: '400' });
             await font.load();
             document.fonts.add(font);
 
@@ -213,7 +218,7 @@ function TextCanvasTexture({ cRef, texUpdateFn }: { cRef: React.RefObject<HTMLCa
     }, [canvasRef, cRef, texUpdateFn]);
 
     return (
-        <div style={{ height: textSize }} className="absolute top-0 flex items-center">
+        <div style={{ height: textSize }} className="absolute top-1/2 -translate-y-1/2 flex items-center">
             <canvas ref={canvasRef} />
         </div>
     )

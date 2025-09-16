@@ -57,14 +57,14 @@ float noise (in vec2 st) {
 #define OCTAVES 4
 float fbm (in vec2 st) {
     float value = 0.0;
-    float amplitude = .5;
+    float amplitude = .75;
     float frequency = 0.;
     for (int i = 0; i < OCTAVES; i++) {
         value += amplitude * noise(st);
-        st *= 2.;
-        amplitude *= .75;
+        st *= 4.;
+        amplitude *= amplitude;
     }
-    return value * 2. - 1.;
+    return (value);
 }
 
 void main(void) {
