@@ -4,9 +4,9 @@ export default class ViewCamera {
     scene: Scene;
     cameraObj: UniversalCamera;
 
-    cameraInitialHeight: number = 128;
+    cameraInitialHeight: number = 2;
     cameraFinalHeight: number = 2;
-    animDuration: number = 8;
+    animDuration: number = 2;
     framerate: number = 30;
 
     lowerCameraAnim!: Animation;
@@ -20,7 +20,7 @@ export default class ViewCamera {
         // DEBUG ONLY:
         // this.cameraObj.attachControl(this.scene.getEngine().getRenderingCanvas(), true);
 
-        this._setupAnims();
+        //this._setupAnims();
     }
 
     private _setupAnims() {
@@ -45,6 +45,7 @@ export default class ViewCamera {
     }
 
     descentAnim() {
+        return;
         setAndStartTimer({
             timeout: 2000,
             contextObservable: this.scene.onBeforeRenderObservable,

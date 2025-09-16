@@ -28,7 +28,7 @@ export default function Home() {
 				<BabylonApp antialias />
 				<Navbar />
 
-				<TitleScreen forceMount={true} />
+				<TitleScreen forceMount={false} />
 
 				<DialogPortal />
 			</div>

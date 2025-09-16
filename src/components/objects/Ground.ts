@@ -103,7 +103,7 @@ void main(void) {
     
     float mountain = smoothstep(0., -mDimensions.y, position.z);
     float heightFactor = smoothstep(8., -mDimensions.y * .75, position.z) * 12. + 0.5;
-    float myHeight = (fbm(vMov * 0.05)) * heightFactor + mountain * 16.;
+    float myHeight = (fbm(vMov * 0.05)) * heightFactor + mountain * 12.;
     mPos.y = myHeight;
     gl_Position = worldViewProjection * vec4(position + vec3(0., mPos.y, 0.), 1.0);
 
