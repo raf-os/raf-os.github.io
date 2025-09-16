@@ -55,7 +55,7 @@ export default class Sun {
 
         this.mesh = MeshBuilder.CreateGround("sunPlane", {width: 24, height: 24}, scene);
         this.mesh.rotate(new Vector3(1, 0, 0), Math.PI / 2);
-        this.mesh.position = new Vector3(32, 26, -32);
+        this.mesh.position = new Vector3(12, 22, -32);
 
         Effect.ShadersStore['sunVertexShader'] = sunVertexShader;
         Effect.ShadersStore['sunFragmentShader'] = sunFragmentShader;
