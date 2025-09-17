@@ -1,11 +1,12 @@
 'use client';
 
 import LanguageSelector from "@/components/LanguageSelector";
+import { Suspense } from "react";
 
 export default function AnimTestPage() {
     return (
-        <div className="w-full h-dvh">
+        <Suspense><div className="w-full h-dvh">
             <LanguageSelector />
-        </div>
+        </div></Suspense>
     )
 }
