@@ -7,6 +7,7 @@ import TitleScreen from "./sections/TitleScreen";
 import Exposition from "./sections/Exposition";
 import { GlobalAppContext, DefaultAppContext, type IGlobalAppContext } from "./GlobalContext";
 import DialogPortal from "@/components/layout/DialogPortal";
+import { Suspense } from "react";
 
 import BabylonApp from "@/components/BabylonApp";
 
@@ -25,6 +26,7 @@ export default function Home() {
 
 	return (
 		<GlobalAppContext.Provider value={ctx}>
+			<Suspense>
 			<div className="relative w-full flex flex-col">
 				<BabylonApp antialias />
 				<Navbar />
@@ -35,6 +37,7 @@ export default function Home() {
 
 				<DialogPortal />
 			</div>
+			</Suspense>
 		</GlobalAppContext.Provider>
 	)
 }
