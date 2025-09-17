@@ -26,7 +26,8 @@ export default function Home() {
 
 	return (
 		<GlobalAppContext.Provider value={ctx}>
-			{/* <Suspense> */}
+			{/* yeah just wrap the entire fucking thing in a suspense why don't you */}
+			<Suspense>
 			<div className="relative w-full flex flex-col">
 				<BabylonApp antialias />
 				<Navbar />
@@ -37,7 +38,7 @@ export default function Home() {
 
 				<DialogPortal />
 			</div>
-			{/* </Suspense> */}
+			</Suspense>
 		</GlobalAppContext.Provider>
 	)
 }
