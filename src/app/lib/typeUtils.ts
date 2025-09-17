@@ -1,0 +1,1 @@
+export type ArrayOrSelf<T> = T | T[];

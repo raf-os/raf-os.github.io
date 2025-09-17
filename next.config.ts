@@ -2,10 +2,12 @@ import type { NextConfig } from "next";
 
 const path = require("path");
 
+const isDev = process.env.NODE_ENV === "development";
+
 const nextConfig: NextConfig = {
   output: 'export',
   basePath: "",
-  assetPrefix: "./",
+  assetPrefix: isDev ? undefined : "./",
   images: {
     unoptimized: true,
   },

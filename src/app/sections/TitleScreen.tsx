@@ -1,12 +1,14 @@
 'use client';
 
 import { GlobalAppContext } from "@/app/GlobalContext";
-import { jersey10, redHatMono } from "@lib/fonts";
-import { cn } from "../lib/utils";
+import { redHatMono } from "@lib/fonts";
+import LanguageSelector from "@/components/LanguageSelector";
+import { cn } from "@lib/utils";
 import { useContext, useEffect, useState, useRef, useCallback } from "react";
 import { useAnimate, motion, useMotionValue, useTransform } from "motion/react";
 import { steps } from "motion";
 import TextShaderApp from "@/components/TextShaderApp";
+import { useLocalization } from "@/app/hooks/useLocalization";
 
 export type TitleScreenProps = React.ComponentPropsWithRef<'div'> & {
     forceMount: boolean;
@@ -57,10 +59,11 @@ export default function TitleScreen({
 
         const animSequence = async () => {
             //await new Promise(resolve => setTimeout(resolve, 1000));
-            animate('[data-slot="animatable-container"]', { y: 0 }, { duration: 1, ease: "circOut" });
-            await animate('[data-slot="title-name"]', { opacity: 1 }, { duration: 2 });
+            animate('[data-slot="animatable-container"]', { y: 0, opacity: 1 }, { duration: 1, delay: 1, y: { ease: "circOut" } });
+            //await animate('[data-slot="title-name"]', { opacity: 1 }, { duration: 2 });
             await animate('[data-slot="title-console"]', { opacity: 1, width: "100%", height: "auto", y: 0 }, { delay: 1, duration: 0.5, ease: "circOut" });
             await typingAnimation(typeWriterText, { showEndline: true, typingDelay: 0.25 });
+            animate('[data-slot="title-footer"]', { opacity: 1 }, {  duration: 1 });
         }
         
         setIsShowing(true);
@@ -88,16 +91,16 @@ export default function TitleScreen({
         >
             <div
                 className="flex flex-col justify-baseline gap-4 relative p-2 w-full h-full md:p-0 md:w-[800px]"
-                style={{ visibility: isShowing? "visible" : "hidden", transform: "translateY(32px)" }}
+                style={{ visibility: isShowing? "visible" : "hidden", transform: "translateY(32px)", opacity: "0" }}
                 data-slot="animatable-container"
             >
                 <div
                     className="flex flex-col items-center w-full relative h-2/5"
                     data-slot="title-name"
-                    style={{ opacity: 0 }}
                 >
                     <TextWackyShader />
                 </div>
+
                 <div className="flex flex-col w-full h-2/5 z-1">
                     <div
                         className={`flex flex-col rounded-lg text-base font-medium bg-green-400 border-2 border-green-400 text-green-400 overflow-hidden ${redHatMono.className}`}
@@ -122,8 +125,29 @@ export default function TitleScreen({
                         </div>
                     </div>
                 </div>
+
+                <div
+                    className="flex flex-col items-center justify-end gap-4 w-full h-1/5"
+                    data-slot="title-footer"
+                    style={{ opacity: 0 }}
+                >
+                    <LanguageSelector />
+                    <FooterText />
+                </div>
             </div>
         </div>
+    )
+}
+
+function FooterText() {
+    const localized = useLocalization(
+        {
+            "en-us": "All rights reserved.",
+            "pt-br": "Todos os direitos reservados."
+        }
+    );
+    return (
+        <div className="font-medium bg-gray-800 py-3 px-4 rounded-lg">Rafael Aguiar, 2025. {localized}</div>
     )
 }
 
