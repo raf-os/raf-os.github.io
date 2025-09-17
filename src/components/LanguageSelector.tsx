@@ -1,5 +1,5 @@
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { AvailableLanguages } from "@/app/hooks/useLocalization";
+import { AvailableLanguages } from "@/hooks/useLocalization";
 import { cn } from "@/app/lib/utils";
 
 const defaultLanguage = "en-us";
@@ -16,7 +16,7 @@ function FlagItem({ children, langcode }: { children?: React.ReactNode, langcode
 
     const handleClick = () => {
         if (selectedLanguage === langcode) return;
-        router.push(`${pathName}?lang=${langcode}`);
+        router.push(`${pathName}?lang=${langcode}`, { scroll: false });
     }
 
     return (

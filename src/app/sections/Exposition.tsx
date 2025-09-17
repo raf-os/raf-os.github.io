@@ -1,0 +1,60 @@
+'use client';
+
+import { useLocalization, Localized, mergeMultiline } from "@/hooks/useLocalization";
+import { cn } from "@lib/utils";
+
+export default function Exposition() {
+    const [ introTitle, briefIntro, experienceIntro ] = useLocalization([
+        {
+            "en-us": "Hello there! I'm Rafael.",
+            "pt-br": "Olá! Sou Rafael."
+        }, {
+            "en-us": "I'm a programmer, and I have a degree in mechanical engineering, with emphasis in mechatronics.",
+            "pt-br": "Sou um programador, e me formei em engenharia mecânica, com ênfase em mecatrônica."
+        }, {
+            "en-us": "When it comes to programming languages, I have experience with javascript, typescript, python, C, C#, C++, PHP. " +
+            "Plus HTML and CSS, which were used to style this very website.\n" +
+            "As for tools and frameworks I've worked with, these include, but are not limited to: Vite, React, Next.JS, Babylon.js, MySQL, Mongodb, Flask, Unity (game engine), Blender, Solidworks, Photoshop, GIMP.",
+            "pt-br": "Falando em linguagens de programação, tenho experiência com javascript, typescript, python, C, C+, C++, PHP. " +
+            "Bem como HTML e CSS, que foram usados para estilizar essa própria página\n " +
+            "Em relação a ferramentas e frameworks que já utilizei, esses incluem, mas não se limitam a: Vite, React, Next.JS, Babylon.js, MySQL, Mongodb, Flask, Unity (criação de jogos/apps), Blender, Solidworks, Photoshop, GIMP."
+        }
+    ]);
+    return (
+        <Segment.Root className="py-24">
+            <Segment.Main className="grow-1 justify-center">
+                <div className="flex flex-col justify-center gap-2 text-lg py-6 px-8 text-center rounded-lg bg-gray-800 shadow-lg" data-slot="segment-body">
+                    <Localized asChild><h1 className="self-center text-6xl font-medium mb-4">{ introTitle }</h1></Localized>
+                    <Localized>{ mergeMultiline(briefIntro, experienceIntro) }</Localized>
+                </div>
+            </Segment.Main>
+        </Segment.Root>
+    )
+}
+
+const Segment = {
+    Root({ children, className, ...rest}: React.ComponentPropsWithRef<'div'>) {
+        return (
+            <div
+                className={cn("flex flex-col items-center w-full px-2 md:px-0", className)}
+                {...rest}
+            >
+                { children }
+            </div>
+        )
+    },
+
+    Main({ children, className, ...rest}: React.ComponentPropsWithRef<'div'>) {
+        return (
+            <div
+                className={cn(
+                    "flex flex-col gap-2 w-full md:w-[920px]",
+                    className
+                )}
+                { ...rest}
+            >
+                { children }
+            </div>
+        )
+    }
+}

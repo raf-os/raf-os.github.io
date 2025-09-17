@@ -4,6 +4,7 @@ import { useState } from "react";
 import type App from "@/components/App";
 import Navbar from "@/components/layout/Navbar";
 import TitleScreen from "./sections/TitleScreen";
+import Exposition from "./sections/Exposition";
 import { GlobalAppContext, DefaultAppContext, type IGlobalAppContext } from "./GlobalContext";
 import DialogPortal from "@/components/layout/DialogPortal";
 
@@ -29,6 +30,8 @@ export default function Home() {
 				<Navbar />
 
 				<TitleScreen forceMount={false} />
+
+				<Exposition />
 
 				<DialogPortal />
 			</div>

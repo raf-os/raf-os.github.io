@@ -8,7 +8,7 @@ import { useContext, useEffect, useState, useRef, useCallback } from "react";
 import { useAnimate, motion, useMotionValue, useTransform } from "motion/react";
 import { steps } from "motion";
 import TextShaderApp from "@/components/TextShaderApp";
-import { useLocalization } from "@/app/hooks/useLocalization";
+import { useLocalization } from "@/hooks/useLocalization";
 
 export type TitleScreenProps = React.ComponentPropsWithRef<'div'> & {
     forceMount: boolean;
@@ -58,11 +58,10 @@ export default function TitleScreen({
         }
 
         const animSequence = async () => {
-            //await new Promise(resolve => setTimeout(resolve, 1000));
-            animate('[data-slot="animatable-container"]', { y: 0, opacity: 1 }, { duration: 1, delay: 1, y: { ease: "circOut" } });
-            //await animate('[data-slot="title-name"]', { opacity: 1 }, { duration: 2 });
-            await animate('[data-slot="title-console"]', { opacity: 1, width: "100%", height: "auto", y: 0 }, { delay: 1, duration: 0.5, ease: "circOut" });
-            await typingAnimation(typeWriterText, { showEndline: true, typingDelay: 0.25 });
+            animate('[data-slot="animatable-container"]', { opacity: 1 }, { duration: 1, delay: 2 });
+            await animate('[data-slot="title-name"]', { y: 0 }, { duration: 1, delay: 2, ease: "circOut" });
+            await animate('[data-slot="title-console"]', { opacity: 1, width: "100%", height: "auto", y: 0 }, { delay: 0, duration: 0.5, ease: "circOut" });
+            typingAnimation(typeWriterText, { showEndline: true, typingDelay: 0.25 });
             animate('[data-slot="title-footer"]', { opacity: 1 }, {  duration: 1 });
         }
         
@@ -91,12 +90,13 @@ export default function TitleScreen({
         >
             <div
                 className="flex flex-col justify-baseline gap-4 relative p-2 w-full h-full md:p-0 md:w-[800px]"
-                style={{ visibility: isShowing? "visible" : "hidden", transform: "translateY(32px)", opacity: "0" }}
+                style={{ visibility: isShowing? "visible" : "hidden", opacity: "0" }}
                 data-slot="animatable-container"
             >
                 <div
                     className="flex flex-col items-center w-full relative h-2/5"
                     data-slot="title-name"
+                    style={{transform: "translateY(64px)"}}
                 >
                     <TextWackyShader />
                 </div>
