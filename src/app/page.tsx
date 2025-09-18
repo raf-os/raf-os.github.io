@@ -27,7 +27,7 @@ export default function Home() {
 
 	return (
 		<GlobalAppContext.Provider value={ctx}>
-			{/* yeah just wrap the entire fucking thing in a suspense why don't you */}
+			{/* yeah just wrap the entire fucking thing in a suspense why don't you zzzz */}
 			<Suspense>
 			<div className="relative w-full flex flex-col">
 				<BabylonApp antialias />
