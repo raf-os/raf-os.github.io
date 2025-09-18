@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+@layer utilities {
+    .carousel-wrapper {
+        --item-gap: 24px;
+        display: flex;
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+    }
+
+    .carousel-track {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        justify-items: start;
+        gap: var(--item-gap);
+    }
+
+    .carousel-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 96px;
+        height: 96px;
+
+        &>img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+}

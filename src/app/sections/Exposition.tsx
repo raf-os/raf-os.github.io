@@ -2,6 +2,36 @@
 
 import { useLocalization, Localized, mergeMultiline } from "@/hooks/useLocalization";
 import { cn } from "@lib/utils";
+import Carousel, { CarouselItemProps } from "@/components/layout/Carousel";
+
+const CarouselItems: CarouselItemProps[] = [{
+    src: "vitejs_logo.svg",
+    label: "Vite"
+}, {
+    src: "react_logo.svg",
+    label: "React"
+}, {
+    src: "nextjs_logo.svg",
+    label: "Next.js"
+}, {
+    src: "babylon_logo.svg",
+    label: "Babylon.js"
+}, {
+    src: "mongodb_logo.svg",
+    label: "Mongodb"
+}, {
+    src: "flask_logo.svg",
+    label: "Flask"
+}, {
+    src: "unity_logo.svg",
+    label: "Unity"
+}, {
+    src: "blender_logo.svg",
+    label: "Blender"
+}, {
+    src: "gimp_logo.svg",
+    label: "GIMP"
+}];
 
 export default function Exposition() {
     const [ introTitle, briefIntro, experienceIntro ] = useLocalization([
@@ -21,11 +51,15 @@ export default function Exposition() {
         }
     ]);
     return (
-        <Segment.Root className="py-24">
+        <Segment.Root className="py-12 min-h-lvh">
             <Segment.Main className="grow-1 justify-center">
                 <div className="flex flex-col justify-center gap-2 text-lg py-6 px-8 text-center rounded-lg bg-gray-800 shadow-lg" data-slot="segment-body">
                     <Localized asChild><h1 className="self-center text-6xl font-medium mb-4">{ introTitle }</h1></Localized>
                     <Localized>{ mergeMultiline(briefIntro, experienceIntro) }</Localized>
+
+                    <div className="p-4 bg-emerald-900 rounded-xl">
+                        <Carousel.Track items={CarouselItems} />
+                    </div>
                 </div>
             </Segment.Main>
         </Segment.Root>

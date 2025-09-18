@@ -7,6 +7,7 @@ import TitleScreen from "./sections/TitleScreen";
 import Exposition from "./sections/Exposition";
 import { GlobalAppContext, DefaultAppContext, type IGlobalAppContext } from "./GlobalContext";
 import DialogPortal from "@/components/layout/DialogPortal";
+import Separator from "@/components/layout/Separator";
 import { Suspense } from "react";
 
 import BabylonApp from "@/components/BabylonApp";
@@ -33,6 +34,8 @@ export default function Home() {
 				<Navbar />
 
 				<TitleScreen forceMount={false} />
+
+				<Separator className="my-12" />
 
 				<Exposition />
 
