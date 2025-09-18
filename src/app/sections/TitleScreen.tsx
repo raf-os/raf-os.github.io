@@ -147,7 +147,7 @@ function FooterText() {
         }
     );
     return (
-        <div className="font-medium bg-gray-800 py-3 px-4 rounded-lg">Rafael Aguiar, 2025. {localized}</div>
+        <div className="font-medium bg-gray-800 py-3 px-4 rounded-lg text-center">Rafael Aguiar, 2025. {localized}</div>
     )
 }
 

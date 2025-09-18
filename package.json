@@ -12,6 +12,7 @@
     "@babylonjs/core": "^8.24.0",
     "@babylonjs/gui": "^8.26.0",
     "@babylonjs/loaders": "^8.25.0",
+    "@radix-ui/react-tooltip": "^1.2.8",
     "clsx": "^2.1.1",
     "lucide-react": "^0.543.0",
     "motion": "^12.23.12",

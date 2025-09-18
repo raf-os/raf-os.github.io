@@ -51,13 +51,13 @@ export default function Exposition() {
         }
     ]);
     return (
-        <Segment.Root className="py-12 min-h-lvh">
-            <Segment.Main className="grow-1 justify-center">
-                <div className="flex flex-col justify-center gap-2 text-lg py-6 px-8 text-center rounded-lg bg-gray-800 shadow-lg" data-slot="segment-body">
-                    <Localized asChild><h1 className="self-center text-6xl font-medium mb-4">{ introTitle }</h1></Localized>
+        <Segment.Root className="py-12 justify-center min-h-dvh">
+            <Segment.Main className="justify-center">
+                <div className="flex flex-col justify-center gap-4 text-lg md:text-xl px-3 py-6 md:py-6 md:px-8 text-center bg-gray-800 rounded-lg shadow-lg" data-slot="segment-body">
+                    <Localized asChild><h1 className="self-center text-4xl md:text-6xl font-medium mb-2">{ introTitle }</h1></Localized>
                     <Localized>{ mergeMultiline(briefIntro, experienceIntro) }</Localized>
 
-                    <div className="p-4 bg-emerald-900 rounded-xl">
+                    <div className="p-4 bg-emerald-800 rounded-xl my-4 outline-2 outline-emerald-800 outline-offset-2">
                         <Carousel.Track items={CarouselItems} />
                     </div>
                 </div>
