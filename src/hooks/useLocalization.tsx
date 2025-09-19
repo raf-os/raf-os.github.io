@@ -42,7 +42,7 @@ export function Localized({ children, className, asChild }: { children?: React.R
     const Comp = asChild ? Slot : "div";
     return simpleComponent? (
         <>
-            {children.split('\n').map((paragraph, idx) => <p key={`__localized-${idx}`}>{paragraph}</p>)}
+            {children.split('\n').map((paragraph, idx) => <p key={`__localized-${idx}`} className={className}>{paragraph}</p>)}
         </>
     ):
     (

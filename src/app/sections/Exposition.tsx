@@ -1,7 +1,7 @@
 'use client';
 
 import { useLocalization, Localized, mergeMultiline } from "@/hooks/useLocalization";
-import { cn } from "@lib/utils";
+import Segment from "@/components/layout/Segment";
 import Carousel, { CarouselItemProps } from "@/components/layout/Carousel";
 import { useEffect } from "react";
 import { useAnimate, useInView, stagger } from "motion/react";
@@ -77,8 +77,8 @@ export default function Exposition() {
     }, [isInView]);
 
     return (
-        <Segment.Root className="py-12 justify-center min-h-dvh">
-            <Segment.Main className="justify-center">
+        <Segment.Root className="py-1 justify-center h-lvh">
+            <Segment.Main className="justify-center grow-1 shrink-1">
                 <div
                     className="flex flex-col justify-center px-2 py-5 md:py-5 md:px-7 text-center bg-gray-800 rounded-lg shadow-lg"
                     data-slot="segment-body"
@@ -102,31 +102,4 @@ export default function Exposition() {
             </Segment.Main>
         </Segment.Root>
     )
-}
-
-const Segment = {
-    Root({ children, className, ...rest}: React.ComponentPropsWithRef<'div'>) {
-        return (
-            <div
-                className={cn("flex flex-col items-center w-full px-2 md:px-0", className)}
-                {...rest}
-            >
-                { children }
-            </div>
-        )
-    },
-
-    Main({ children, className, ...rest}: React.ComponentPropsWithRef<'div'>) {
-        return (
-            <div
-                className={cn(
-                    "flex flex-col gap-2 w-full md:w-[920px]",
-                    className
-                )}
-                { ...rest}
-            >
-                { children }
-            </div>
-        )
-    }
 }

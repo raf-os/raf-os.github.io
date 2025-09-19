@@ -25,3 +25,17 @@ body {
 		}
 	}
 }
+
+@utility btn {
+	display: inline-block;
+	padding: calc(var(--spacing) * 1) calc(var(--spacing) * 3);
+	background-image: linear-gradient(to bottom, var(--color-emerald-500), var(--color-emerald-600));
+	color: var(--color-emerald-950);
+	border-radius: 6px;
+	font-size: var(--text-sm);
+	font-weight: 500;
+
+	&:hover, &:active {
+		background-image: linear-gradient(to bottom, var(--color-emerald-600), var(--color-emerald-700));
+	}
+}

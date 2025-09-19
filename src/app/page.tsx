@@ -1,14 +1,14 @@
 'use client';
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import type App from "@/components/App";
 import Navbar from "@/components/layout/Navbar";
 import TitleScreen from "./sections/TitleScreen";
 import Exposition from "./sections/Exposition";
+import ProjectList from "./sections/ProjectList";
 import { GlobalAppContext, DefaultAppContext, type IGlobalAppContext } from "./GlobalContext";
 import DialogPortal from "@/components/layout/DialogPortal";
 import Separator from "@/components/layout/Separator";
-import { Suspense } from "react";
 
 import BabylonApp from "@/components/BabylonApp";
 
@@ -35,9 +35,13 @@ export default function Home() {
 
 				<TitleScreen forceMount={false} />
 
-				<Separator className="my-12" />
+				<Separator className="mt-12" />
 
 				<Exposition />
+
+				<Separator className="mb-24" />
+
+				<ProjectList />
 
 				<DialogPortal />
 			</div>
