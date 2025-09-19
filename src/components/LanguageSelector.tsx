@@ -1,10 +1,11 @@
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { AvailableLanguages } from "@/hooks/useLocalization";
 import { cn } from "@/app/lib/utils";
+import { useTransition } from "react";
 
 const defaultLanguage = "en-us";
 
-function FlagItem({ children, langcode }: { children?: React.ReactNode, langcode: keyof typeof AvailableLanguages }) {
+function FlagItem({ children, langcode, onSelect }: { children?: React.ReactNode, langcode: keyof typeof AvailableLanguages, onSelect: (langcode: string) => void }) {
     const searchParams = useSearchParams();
     const pathName = usePathname();
     const router = useRouter();
@@ -16,14 +17,14 @@ function FlagItem({ children, langcode }: { children?: React.ReactNode, langcode
 
     const handleClick = () => {
         if (selectedLanguage === langcode) return;
-        router.push(`${pathName}?lang=${langcode}`, { scroll: false });
+        onSelect(langcode);
     }
 
     return (
         <button
             className={cn(
                 "flex grow-1 shrink-1 md:grow-0 items-center justify-center md:w-20 md:h-12 rounded-lg text-4xl cursor-pointer select-none outline outline-offset-2",
-                isSelected ? "bg-emerald-600/25 outline-emerald-400" : "bg-gray-800/75 outline-transparent"
+                (isSelected) ? "bg-emerald-600/25 outline-emerald-400" : "bg-gray-800/75 outline-transparent",
             )}
             onClick={handleClick}
         >
@@ -33,10 +34,21 @@ function FlagItem({ children, langcode }: { children?: React.ReactNode, langcode
 }
 
 export default function LanguageSelector() {
+    const pathName = usePathname();
+    const router = useRouter();
+    const [ isPending, startTransition ] = useTransition();
+
+    const handleChange = (langcode: string) => {
+        if (isPending) return;
+        startTransition(async() => {
+            router.push(`${pathName}?lang=${langcode}`, { scroll: false });
+        });
+    }
+    
     return (
-        <div className="w-full flex gap-4 items-center justify-center py-2" role="list">
-            <FlagItem langcode="en-us">🇺🇸</FlagItem>
-            <FlagItem langcode="pt-br">🇧🇷</FlagItem>
+        <div className={cn("w-full flex gap-4 items-center justify-center py-2 transition-[scale]", isPending?"opacity-25 scale-90":"opacity-100 scale-100")} role="language-selector">
+            <FlagItem langcode="en-us" onSelect={handleChange}>🇺🇸</FlagItem>
+            <FlagItem langcode="pt-br" onSelect={handleChange}>🇧🇷</FlagItem>
         </div>
     )
 }

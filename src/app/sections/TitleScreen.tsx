@@ -83,7 +83,7 @@ export default function TitleScreen({
     return (
         <div
             className={cn(
-                "flex flex-col w-full h-dvh items-center relative py-8 overflow-hidden"
+                "flex flex-col w-full h-lvh items-center relative py-8 overflow-hidden"
             )}
             ref={scope}
             {...rest}

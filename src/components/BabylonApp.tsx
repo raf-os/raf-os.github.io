@@ -61,7 +61,7 @@ export default function BabylonApp({
     }, []);
 
     return (
-        <div className="flex w-full h-dvh fixed top-0 left-0 -z-50">
+        <div className="flex w-full h-lvh fixed top-0 left-0 -z-50">
             <canvas
                 id="webglCanvas"
                 ref={reactCanvas}
