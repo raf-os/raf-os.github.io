@@ -28,7 +28,7 @@ body {
 
 @utility btn {
 	display: inline-block;
-	padding: calc(var(--spacing) * 1) calc(var(--spacing) * 3);
+	padding: calc(var(--spacing) * 2) calc(var(--spacing) * 4);
 	background-image: linear-gradient(to bottom, var(--color-emerald-500), var(--color-emerald-600));
 	color: var(--color-emerald-950);
 	border-radius: 6px;
@@ -37,5 +37,13 @@ body {
 
 	&:hover, &:active {
 		background-image: linear-gradient(to bottom, var(--color-emerald-600), var(--color-emerald-700));
+	}
+}
+
+@layer utilities {
+	.markdown-styling {
+		& p:not(:last-child) {
+			margin-bottom: 6px;
+		}
 	}
 }

@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { ArrayOrSelf } from "@lib/typeUtils";
 import { cn } from "@lib/utils";
 import Slot from "@/components/Slot";
+import Markdown from "react-markdown";
 
 export const AvailableLanguages = {
     'pt-br': "Portugês - Brasil",
@@ -37,8 +38,19 @@ export function mergeMultiline(...lines: string[]) {
     return lines.join('\n');
 }
 
-export function Localized({ children, className, asChild }: { children?: React.ReactNode, className?: string, asChild?: boolean }) {
+export function Localized({ children, className, asChild, useMarkdown }: { children: string, className?: string, asChild?: boolean, useMarkdown: boolean }): React.ReactNode;
+export function Localized({ children, className, asChild }: { children?: React.ReactNode, className?: string, asChild?: boolean }): React.ReactNode;
+export function Localized({ children, className, asChild, useMarkdown }: { children?: React.ReactNode, className?: string, asChild?: boolean, useMarkdown?: boolean }) {
     const simpleComponent = (asChild!==true && typeof children==="string");
+
+    if (simpleComponent && useMarkdown) {
+        return (
+            <Markdown>
+                { children }
+            </Markdown>
+        )
+    }
+
     const Comp = asChild ? Slot : "div";
     return simpleComponent? (
         <>
