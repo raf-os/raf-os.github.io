@@ -2,10 +2,12 @@
 
 import Segment from "@/components/layout/Segment";
 import { useLocalization, Localized, AvailableLanguages, type TLocalizedItem } from "@/hooks/useLocalization";
-import { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { cn } from "@lib/utils";
 import Image from "next/image";
+import Responsive, { Queries } from "@/components/layout/Responsive";
+import { ChevronDown } from "lucide-react";
 
 type TProjectListContext = {
     handleProjectSelection: (pid: number) => boolean;
@@ -145,7 +147,8 @@ const myProjects: ILocalizedProjectItem[] = [{
     },
     image: "nutria-dashboard.webp",
     languages: "Typescript, HTML, CSS"
-}]
+}];
+const projectsWithID = myProjects.map((p, idx) => ({...p, __ID: idx}));
 
 export default function ProjectList() {
     const [ selectedProject, setSelectedProject ] = useState<number>(0);
@@ -203,18 +206,25 @@ export default function ProjectList() {
                 </Segment.Main>
 
                 <ProjectListContext.Provider value={ctx}>
-                    <div className="flex flex-nowrap gap-8 w-full lg:w-[1024px] h-full">
-                        <div className="w-1/4 h-full grow-0 shrink-0 flex flex-col gap-2 items-end pr-4 border-r-2 border-emerald-500 text-lg">
-                            <ProjectListLabel htmlFor="public-projects">{ publicProjectsLabel }</ProjectListLabel>
-                            <ProjectListSection id="public-projects">
-                                { projects.public }
-                            </ProjectListSection>
+                    <div className="flex flex-col lg:flex-row lg:flex-nowrap gap-8 w-full lg:w-[1024px] h-full">
+                        <Responsive breakpoint={Queries.IsDesktop}
+                            onMatch={(
+                                <div className="w-1/4 h-full grow-0 shrink-0 flex flex-col gap-2 items-end pr-4 border-r-2 border-emerald-500 text-lg">
+                                    <ProjectListLabel htmlFor="public-projects">{ publicProjectsLabel }</ProjectListLabel>
+                                    <ProjectListSection id="public-projects">
+                                        { projects.public }
+                                    </ProjectListSection>
 
-                            <ProjectListLabel htmlFor="private-projects">{ privateProjectsLabel }</ProjectListLabel>
-                            <ProjectListSection id="private-projects">
-                                { projects.private }
-                            </ProjectListSection>
-                        </div>
+                                    <ProjectListLabel htmlFor="private-projects">{ privateProjectsLabel }</ProjectListLabel>
+                                    <ProjectListSection id="private-projects">
+                                        { projects.private }
+                                    </ProjectListSection>
+                                </div>
+                            )}
+                            onFail={(
+                                <ProjectListMobile labelPublic={publicProjectsLabel} labelPrivate={privateProjectsLabel} selectedProject={selectedProject} />
+                            )}
+                        />
 
                         <div
                             className="flex flex-col grow-1 shrink-1 overflow-x-hidden"
@@ -226,6 +236,136 @@ export default function ProjectList() {
                     </div>
                 </ProjectListContext.Provider>
             </Segment.Root>
+        </div>
+    )
+}
+
+type ProjectListMobileProps = {
+    labelPublic: string,
+    labelPrivate: string,
+    selectedProject: number,
+}
+
+function ProjectListItemMobile({
+    project,
+    isSelected,
+    onSelect
+}: {
+    project: ILocalizedProjectItem & { __ID: number },
+    isSelected?: boolean,
+    onSelect: (id: number) => void;
+}) {
+    const localizedTitle = useLocalization(formatProjectLocalization(project)[0]);
+    const handleOnSelect = () => {
+        onSelect(project.__ID);
+    }
+    return (
+        <li
+            className={cn(
+                "text-lg font-medium not-first:pt-2 pl-2 not-last:pb-2",
+                isSelected && "text-gray-600"
+            )}
+            role="button"
+            onClick={handleOnSelect}
+        >
+            { localizedTitle }
+        </li>
+    )
+}
+
+function ProjectListMobile(props: ProjectListMobileProps) {
+    const [ isOpen, setIsOpen ] = useState<boolean>(false);
+    const _selectorRef = useRef<HTMLButtonElement>(null);
+    const _menuRef = useRef<HTMLDivElement>(null);
+
+    const privateProjects = projectsWithID.filter(proj => proj._TYPE==="private");
+    const publicProjects = projectsWithID.filter(proj => proj._TYPE==="public");
+
+    const { selectedProject, labelPrivate, labelPublic } = props;
+    const {handleProjectSelection} = useContext(ProjectListContext);
+
+    const selectedTitle = myProjects[selectedProject];
+    const localizedSelectedTitle = useLocalization(formatProjectLocalization(selectedTitle)[0]);
+
+    const projectMap = (projectList: (ILocalizedProjectItem & { __ID: number })[]) => {
+        return projectList.map(proj => (
+            <ProjectListItemMobile key={proj.__ID} project={proj} isSelected={selectedProject===proj.__ID} onSelect={handleSelectItem} />
+        ));
+    }
+
+    const onMenuOpen = () => {
+        setIsOpen(current => !current);
+    }
+
+    const handleSelectItem = (mID: number) => {
+        handleProjectSelection(mID);
+        setIsOpen(false);
+    }
+
+    useEffect(() => {
+        const handleOutsideClick = (ev: PointerEvent) => {
+            if (_selectorRef.current && _selectorRef.current.contains(ev.target as Node | null)) {
+                return;
+            }
+            if (_menuRef.current && _menuRef.current.contains(ev.target as Node | null)) {
+                return;
+            }
+
+            setIsOpen(false); // it's outside
+        }
+
+        document.addEventListener("click", handleOutsideClick);
+        return () => document.removeEventListener("click", handleOutsideClick);
+    }, []);
+
+    const LabelJSX = ({children}: {children?: React.ReactNode}) => {
+        return (
+            <label className="text-emerald-400 text-sm font-bold uppercase">
+                { children }
+            </label>
+        )
+    };
+
+    const variants = {
+        hidden: {
+            height: 0,
+            opacity: 0,
+        },
+        visible: {
+            height: "auto",
+            opacity: 1,
+        }
+    }
+
+    return (
+        <div className="relative z-1">
+            <button ref={_selectorRef} type="button" className="flex gap-4 w-full text-left items-center h-12 justify-between bg-gray-900 rounded-lg" onClick={onMenuOpen}>
+                <div className="grow-1 shrink-1 py-1 px-3 overflow-x-hidden text-ellipsis text-emerald-400 text-lg font-medium">
+                    { localizedSelectedTitle }
+                </div>
+                <div className="flex items-center justify-center grow-0 shrink-0 h-full px-1 bg-emerald-900 rounded-r-lg">
+                    <ChevronDown size={32} color="var(--color-emerald-400)" className={cn("transition-transform", isOpen?"rotate-180":"rotate-0")} />
+                </div>
+            </button>
+            <AnimatePresence>
+                { isOpen && (
+                    <motion.div
+                        className="absolute top-full translate-y-2 w-full bg-gray-900 rounded-lg overflow-hidden"
+                        variants={variants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                        ref={_menuRef}
+                    >
+                        <ul className="flex flex-col p-4">
+                            <LabelJSX>{labelPublic}</LabelJSX>
+                                { projectMap(publicProjects) }
+                            <LabelJSX>{labelPrivate}</LabelJSX>
+                                { projectMap(privateProjects) }
+                        </ul>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     )
 }
@@ -321,7 +461,7 @@ function ProjectItem({ item }: { item: ILocalizedProjectItem }) {
             layout
         >
             <h2
-                className="text-2xl font-medium text-emerald-400"
+                className="text-2xl hidden lg:block font-medium text-emerald-400"
             >
                 { title }
             </h2>
@@ -332,7 +472,7 @@ function ProjectItem({ item }: { item: ILocalizedProjectItem }) {
                         width={256}
                         height={256}
                         src={`/project-images/${image}`}
-                        className="rounded-full outline-4 outline-offset-2 outline-emerald-500 shadow-lg shadow-black/25 object-cover object-center"
+                        className="mx-auto lg:mx-0 rounded-full outline-4 outline-offset-2 outline-emerald-500 shadow-lg shadow-black/25 object-cover object-center"
                         alt="Project image"
                     />
                 </div>
