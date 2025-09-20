@@ -51,16 +51,62 @@ const myProjects: ILocalizedProjectItem[] = [{
     },
     image: "playground.webp",
     hyperlink: "https://github.com/raf-os/my-vite-learn-app"
+}, {
+    _NAME: "godot-fps",
+    _TYPE: "public",
+    'en-us': {
+        title: "Godot C# FPS",
+        description: "Lorem ipsum",
+    },
+    'pt-br': {
+        title: "Godot C# FPS",
+        description: "Lorem ipsum"
+    },
+    image: "godot-fps.webp",
+    hyperlink: "https://github.com/raf-os/godot-csharp-fps"
+}, {
+    _NAME: "nutria-dynamic",
+    _TYPE: "private",
+    'en-us': {
+        title: "NutrIA Dynamic Website",
+        description: "Lorem ipsum",
+    },
+    'pt-br': {
+        title: "NutrIA Site Dinâmico",
+        description: "Lorem ipsum"
+    },
+    image: "nutria-dynamic.webp",
+}, {
+    _NAME: "nutria-dashboard",
+    _TYPE: "private",
+    'en-us': {
+        title: "NutrIA Dashboard",
+        description: "Lorem ipsum",
+    },
+    'pt-br': {
+        title: "Dashboard do NutrIA",
+        description: "Lorem ipsum"
+    },
+    image: "nutria-dashboard.webp",
 }]
 
 export default function ProjectList() {
     const [ selectedProject, setSelectedProject ] = useState<number>(0);
-    const [ sectionHeader, sectionSubtitle ] = useLocalization([{
+    const [ sectionHeader, sectionSubtitle, imageAltText, publicProjectsLabel, privateProjectsLabel ] = useLocalization([{
         "en-us": "My projects",
         "pt-br": "Meus projetos"
     }, {
         "en-us": "Here's a list of my public projects available on my github page:",
         "pt-br": "Aqui está uma lista de todos meus projetos públicos disponíveis na minha página do github:"
+    }, {
+        "en-us": "A screenshot of this project.",
+        "pt-br": "Uma imagem desse projeto."
+    }, {
+        "en-us": "Public projects",
+        "pt-br": "Projetos públicos"
+    }, {
+        "en-us": "Private projects",
+        "pt-br": "Projetos privados"
     }]);
 
     const onProjectSelected = (pid: number) => {
@@ -73,6 +119,17 @@ export default function ProjectList() {
     const ctx: TProjectListContext = {
         handleProjectSelection: onProjectSelected
     }
+
+    const projects: Record<string, React.ReactNode[]> = {
+        private: [],
+        public: [],
+    }
+
+    myProjects.map((p, idx) => {
+        const jsx = (<TitleListItem pid={idx} item={p} key={`pid[${idx}]::${p._NAME}`} isSelected={idx===selectedProject} />);
+        if (p._TYPE==="private") { projects.private.push(jsx); }
+        else if (p._TYPE==="public") { projects.public.push(jsx); }
+    });
 
     return (
         <div
@@ -94,9 +151,15 @@ export default function ProjectList() {
                 <ProjectListContext.Provider value={ctx}>
                     <div className="flex flex-nowrap gap-8 w-full h-full">
                         <div className="w-1/4 h-full grow-0 shrink-0 flex flex-col gap-2 items-end pr-4 border-r-2 border-emerald-500 text-lg">
-                        { myProjects.map((p, idx) => (
-                            <TitleListItem pid={idx} item={p} key={`pid[${idx}]::${p._NAME}`} isSelected={idx===selectedProject} />
-                        )) }
+                            <ProjectListLabel htmlFor="public-projects">{ publicProjectsLabel }</ProjectListLabel>
+                            <ProjectListSection id="public-projects">
+                                { projects.public }
+                            </ProjectListSection>
+
+                            <ProjectListLabel htmlFor="private-projects">{ privateProjectsLabel }</ProjectListLabel>
+                            <ProjectListSection id="private-projects">
+                                { projects.private }
+                            </ProjectListSection>
                         </div>
 
                         <div
@@ -113,6 +176,34 @@ export default function ProjectList() {
     )
 }
 
+function ProjectListLabel({ children, className, ...rest}: React.ComponentPropsWithRef<'label'>) {
+    return (
+        <label
+            className={cn(
+                "w-full text-right text-sm font-bold uppercase text-emerald-400",
+                className
+            )}
+            {...rest}
+        >
+            {children}
+        </label>
+    )
+}
+
+function ProjectListSection({children, className, ...rest}: React.ComponentPropsWithRef<'ul'>) {
+    return (
+        <ul
+            className={cn(
+                "w-full flex flex-col items-end gap-2",
+                className
+            )}
+            { ...rest }
+        >
+            {children}
+        </ul>
+    )
+}
+
 function TitleListItem({ item, isSelected, pid }: { item: ILocalizedProjectItem, isSelected: boolean, pid: number}) {
     const [ t ] = formatProjectLocalization(item);
     const projectTitle = useLocalization(t);
@@ -124,23 +215,23 @@ function TitleListItem({ item, isSelected, pid }: { item: ILocalizedProjectItem,
     }
 
     return (
-        <button
-            type="button"
+        <li
             className={cn(
                 "cursor-pointer flex relative",
                 isSelected && "font-bold"
             )}
+            role="button"
             onClick={handleSelect}
         >
             { projectTitle }
 
             { isSelected && (
                 <motion.div
-                    className="w-[6px] translate-x-[14px] h-full absolute top-0 left-full rounded-full bg-emerald-500"
+                    className="w-[8px] translate-x-[13px] h-full absolute top-0 left-full rounded-full bg-emerald-500"
                     layoutId="selector"
                 />
             )}
-        </button>
+        </li>
     )
 }
 
