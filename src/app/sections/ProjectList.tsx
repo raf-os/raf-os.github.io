@@ -182,6 +182,7 @@ function ProjectItem({ item }: { item: ILocalizedProjectItem }) {
                         height={256}
                         src={`/project-images/${image}`}
                         className="rounded-full outline-2 outline-offset-2 outline-emerald-500 shadow-lg shadow-black/25 object-cover object-center"
+                        alt="Project image"
                     />
                 </div>
                 <Localized className="md:clear-right">
@@ -203,7 +204,7 @@ function ProjectItem({ item }: { item: ILocalizedProjectItem }) {
 
 function formatProjectLocalization(project: ILocalizedProjectItem) {
     const {image: _, hyperlink: __, _NAME: ___, ...localizations} = project;
-    let formatted: TLocalizedItem[] = [];
+    const formatted: TLocalizedItem[] = [];
 
     for (const [key, value] of Object.entries(localizations)) {
         Object.entries(value).map(([_, v], idx) => {
