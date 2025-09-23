@@ -50,7 +50,18 @@ const myProjects: ILocalizedProjectItem[] = [{
     },
     'pt-br': {
         title: "raf-os.github.io",
-        description: "Lorem ipsum"
+        description:    "É esse website!\n\n" +
+                        "Ele utiliza o framework *Next.js* para exportar um site estático, totalmente no front-end para ser hosteado " +
+                        "como uma página do github. Foi programado quase totalmente em typescript, com um pouco de HTML e CSS para o layout " +
+                        "e estilos. O código fonte está disponível em sua totalidade no meu perfil do github, ou pode também clicar no botão no " +
+                        "final dessa descrição para ir diretamente ao repositório.\n\n" +
+                        "O fundo animado que você vê utiliza *Babylon.js* para apresentar uma cena em 3D gerada proceduralmente. " +
+                        "Inicialmente, a ideia era ter uma cidade como o fundo, com os prédios passando ao longo do tempo. " +
+                        "Apesar de ter funcionado, um único simples modelo de prédio que fiz em blender, apesar de ser muito pequeno de tamanho (+- 50kb), " +
+                        "aumentou dramaticamente o tempo inicial de carregamento da página, que foi inaceitável. Decidi então que ao invés de utilizar " +
+                        "modelos, iria gerar proceduralmente um terreno pelo uso de um shader GLSL personalizado. Ele pega uma superfície plana " +
+                        "e acrescenta altura, criando as montanhas, e então desenha a textura por cima dessa superfície. O sol também é desenhado " +
+                        "através de um próprio shader, e somente o céu no fundo que é uma imagem que criei usando o blender.",
     },
     image: "website.webp",
     hyperlink: "https://github.com/raf-os/raf-os.github.io",
@@ -70,7 +81,13 @@ const myProjects: ILocalizedProjectItem[] = [{
     },
     'pt-br': {
         title: "Test Playground",
-        description: "Lorem ipsum"
+        description:    "Uma coleção de vários experimentos em front-end programados em typescript. " +
+                        "Utiliza Vite e react-router como sua base.\n\n" +
+                        "Atualmente, contém: uma tentariva de criar um sistema de formulários melhor que retorna um " +
+                        "objeto JSON quando o formulário é enviado; e alguns protótipos de um app que teoreticamente permitiria " +
+                        "que o usuário programasse um app somente arrastando elementos pré-definidos. Este teve a intenção de " +
+                        "ser uma alternativa mais acessível para programação, sendo que o alvo são usuários menos experientes, " +
+                        "providenciando facilidade de uso ao custo de complexidade (para melhor ou pior).",
     },
     image: "playground.webp",
     hyperlink: "https://github.com/raf-os/my-vite-learn-app",
@@ -81,16 +98,20 @@ const myProjects: ILocalizedProjectItem[] = [{
     'en-us': {
         title: "Godot C# FPS",
         description:    "A simple first person shooter game prototype using the godot game engine, written entirely in C#. " +
-                        "The models were downloaded from sketchfab, which I then had to rig and animate in blender. " +
+                        "The 3D models were downloaded from sketchfab, which I then had to rig and animate in blender. " +
                         "Right now, these assets are not included in the github repository, as they're a bit larger in size " +
                         "and not ideal for a repo, and while the models were free downloads, I'm not sure under what license they're under, " +
                         "so I don't know how freely I may distribute them, and if there are any additional prerequisites such as crediting " +
-                        "the authors. I will probably get this sorted out later.\n\n" +
-                        "**W A S D** - Move\n\n**Space** - Jump\n\n**Left mouse button** - Shoot",
+                        "the authors. I will probably get this sorted out later.",
     },
     'pt-br': {
         title: "Godot C# FPS",
-        description: "Lorem ipsum"
+        description:    "Um simples protótipo de jogo de tiro de primeira pessoa usando o godot, programado totalmente em C#. " +
+                        "Os modelos 3D foram baixados do sketchfab, e posteriormente fiz o rigging e animei no blender. " +
+                        "Nesse momento, esses modelos não estão disponíveis no repositório, por serem um pouco grandes e não serem " +
+                        "ideais para um repositório no github, e apesar dos modelos serem gratuitos, não tenho certeza de qual licença " +
+                        "os autores definiram, então não sei se posso livremente distribuí-los, e se preciso de algum outro pré-requisito " +
+                        "como adicionar crédito aos autores. Provavelmente irei lidar com isso no futuro.",
     },
     image: "godot-fps.webp",
     hyperlink: "https://github.com/raf-os/godot-csharp-fps",
@@ -105,12 +126,17 @@ const myProjects: ILocalizedProjectItem[] = [{
                         "in a more user-friendly way, with the idea of creating more modular and personalized reports, to better " +
                         "help them achieve their nutritional goals.\n\n" +
                         "While this project is mostly aligned with front-end development, it still has some light back-end work " +
-                        "that fetches data from a mongodb database.\n\n" +
+                        "that directly fetches data from a mongodb database.\n\n" +
                         "*As of now, the project is in an indefinite hiatus.*",
     },
     'pt-br': {
         title: "NutrIA Site Dinâmico",
-        description: "Lorem ipsum"
+        description:    "Um projeto comercial que começei com meu irmão, que faz uso de um Large Language Model em um back-end separado " +
+                        "para gerar relatórios nutricionais personalizados aos clientes, que então seriam re-organizados por esse website " +
+                        "em um formato mais agradável ao usuário, para melhor ajudá-los a alcançar suas metas nutricionais.\n\n" +
+                        "Apesar do projeto em grande parte ser direcionado ao front-end, ainda tem leves elementos de back-end " +
+                        "que busca informações diretamente de um banco de dados do mongodb.\n\n" + 
+                        "*Atualmente, o projeto está em pausa por tempo indefinido.*"
     },
     image: "nutria-dynamic.webp",
     languages: "Typescript, HTML, CSS"
@@ -122,11 +148,14 @@ const myProjects: ILocalizedProjectItem[] = [{
         description:    "A commercial project I started with my brother. This is the back-end portion of the project, " +
                         "and uses the FastAPI python library to set up an API endpoint that communicates with the Whatsapp and OpenAI APIs." +
                         "My contributions were mostly at the beggining, helping set up and organize the original project. " +
-                        "After that was done, I moved on to the more UI oriented areas.",
+                        "After that was done, I moved on to the more UI oriented areas, on the front end.",
     },
     'pt-br': {
         title: "REST API do NutrIA",
-        description: "Lorem ipsum"
+        description:    "Um projeto comercial que iniciei com meu irmão. Essa é a parte do back-end do projeto, e utiliza a biblioteca " +
+                        "FastAPI do python para criar um endpoint de uma API que comunica com os APIs do Whatsapp e OpenAI. " +
+                        "Minhas contribuições foram em grande parte no início, ajudando a montar e organizar o projeto inicial. " +
+                        "Depois disso, me foquei mais nas partes de UI, no front-end."
     },
     image: "nutria-rest-api.webp",
     languages: "Python"
@@ -143,7 +172,12 @@ const myProjects: ILocalizedProjectItem[] = [{
     },
     'pt-br': {
         title: "Dashboard do NutrIA",
-        description: "Lorem ipsum"
+        description:    "Um dashboard feito para ajudar a configurar e monitorar as atividades de agentes de chat IA de uma forma mais fácil, " +
+                        "centralizada e de fácil leitura humana, com intuito de diminuir a barreira de entrada para criação e manutenção dos " +
+                        "mesmos. Esse projeto inspirou alguns de meus experimentos mostrados acima, no 'Test Playground'.\n\n" +
+                        "Esse projeto tem uma quantidade igual de front-end e back-end, e contém um simples sistema de autenticação " +
+                        "de usuários. \n\n" +
+                        "*Atualmente, o projeto está em pausa por tempo indefinido.*"
     },
     image: "nutria-dashboard.webp",
     languages: "Typescript, HTML, CSS"
