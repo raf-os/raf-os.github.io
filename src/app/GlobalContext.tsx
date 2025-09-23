@@ -2,8 +2,8 @@ import type App from "@/components/App";
 import { createContext } from "react";
 
 export interface IGlobalAppContext {
-    appObj?: App;
-    updateAppObj: (obj: App | undefined) => void;
+    appObj?: App | null;
+    updateAppObj: (obj: App | null) => void;
     lang: "pt-br" | "en-us";
 }
 

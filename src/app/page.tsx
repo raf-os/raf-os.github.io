@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, Suspense } from "react";
+import { useState, useEffect, useRef } from "react";
 import type App from "@/components/App";
 import Navbar from "@/components/layout/Navbar";
 import TitleScreen from "./sections/TitleScreen";
@@ -13,27 +13,37 @@ import Separator from "@/components/layout/Separator";
 import BabylonApp from "@/components/BabylonApp";
 
 export default function Home() {
-	const [ appObj, setAppObj ] = useState<App | undefined>(undefined);
+	const appObj = useRef<App | null>(null);
+	const [ isAppReady, setIsAppReady ] = useState<boolean>(false);
 
-	const updateAppObj = (obj: App | undefined) => {
-		setAppObj(obj);
+	const updateAppObj = (obj: App | null) => {
+		appObj.current = obj;
 	}
 
 	const ctx: IGlobalAppContext = {
 		...DefaultAppContext,
-		appObj: appObj,
+		appObj: appObj.current,
 		updateAppObj: updateAppObj
 	};
+
+	const handleAppAssetsLoaded = () => {
+		setIsAppReady(true);
+	}
+
+	useEffect(() => {
+		if (appObj.current) {
+			appObj.current.observables.onAssetsLoaded.addOnce(() => handleAppAssetsLoaded());
+		}
+	}, [appObj]);
 
 	return (
 		<GlobalAppContext.Provider value={ctx}>
 			{/* yeah just wrap the entire fucking thing in a suspense why don't you zzzz */}
-			<Suspense>
 			<div className="relative w-full flex flex-col">
 				<BabylonApp antialias />
 				<Navbar />
 
-				<TitleScreen forceMount={false} />
+				<TitleScreen forceMount={isAppReady} />
 
 				<Separator className="mt-12" />
 
@@ -45,7 +55,6 @@ export default function Home() {
 
 				<DialogPortal />
 			</div>
-			</Suspense>
 		</GlobalAppContext.Provider>
 	)
 }

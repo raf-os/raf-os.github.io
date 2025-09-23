@@ -44,14 +44,9 @@ export default class App {
         const sun = new Sun(this.scene);
 
         this.scene.onReadyObservable.addOnce(() => {
-            WorldEnvironment.glowLayer.addIncludedOnlyMesh(ground.mesh);
-            WorldEnvironment.glowLayer.addIncludedOnlyMesh(sun.mesh);
-
             this.observables.onAssetsLoaded.notifyObservers();
-
-            this.mainCamera.descentAnim();
         });
-
+        
         if (window) {
             window.addEventListener("resize", this.resize);
         }

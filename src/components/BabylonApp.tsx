@@ -55,7 +55,7 @@ export default function BabylonApp({
 
         return () => {
             appObj.current?.kill();
-            updateAppObj(undefined);
+            updateAppObj(null);
         }
         // eslint-disable-next-line
     }, []);

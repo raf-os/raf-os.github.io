@@ -68,17 +68,17 @@ export default function TitleScreen({
         setIsShowing(true);
         triggeredAnimation.current = true;
         animSequence();
-        // eslint-disable-next-line
-    }, [animate]);
+    }, [animate, ctx.appObj]);
 
     useEffect(() => {
         if (triggeredAnimation.current) return;
         if (forceMount) {
             fadeInAnim();
-        } else if (ctx.appObj !== undefined) {
-            ctx.appObj.observables.onAssetsLoaded.addOnce(() => fadeInAnim());
         }
-    }, [forceMount, ctx.appObj, fadeInAnim]);
+        // else if (ctx.appObj) {
+        //     ctx.appObj.observables.onAssetsLoaded.addOnce(() => fadeInAnim());
+        // }
+    }, [forceMount]);
 
     return (
         <div
