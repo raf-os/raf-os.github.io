@@ -50,8 +50,6 @@ export default function Home() {
 
 				<Exposition />
 
-				<Separator className="mb-24" />
-
 				<ProjectList />
 
 				<Footer />

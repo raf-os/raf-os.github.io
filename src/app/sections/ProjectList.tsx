@@ -49,53 +49,56 @@ export default function ProjectList() {
     });
 
     return (
-        <div
-            className="flex justify-center w-full bg-gray-800 py-12 min-h-lvh"
-        >
-            <Segment.Root className="gap-6">
-                <Segment.Main>
-                    <div className="flex flex-col gap-4 text-center">
-                        <h1 className="text-4xl font-medium">
-                            { sectionHeader }
-                        </h1>
+        <div className="flex flex-col">
+            <div className="w-full h-12 bg-linear-to-b from-transparent to-black/50" />
+            <div
+                className="flex justify-center w-full bg-gray-800 py-12 min-h-lvh"
+            >
+                <Segment.Root className="gap-6">
+                    <Segment.Main>
+                        <div className="flex flex-col gap-4 text-center">
+                            <h1 className="text-4xl font-medium">
+                                { sectionHeader }
+                            </h1>
 
-                        <p>
-                            { sectionSubtitle }
-                        </p>
-                    </div>
-                </Segment.Main>
-
-                <ProjectListContext.Provider value={ctx}>
-                    <div className="flex flex-col lg:flex-row lg:flex-nowrap gap-8 w-full lg:w-[1024px] h-full">
-                        <Responsive breakpoint={Queries.IsDesktop}
-                            onMatch={(
-                                <div className="w-1/4 h-full grow-0 shrink-0 flex flex-col gap-2 items-end pr-4 border-r-2 border-emerald-500 text-lg">
-                                    <ProjectListLabel htmlFor="public-projects">{ publicProjectsLabel }</ProjectListLabel>
-                                    <ProjectListSection id="public-projects">
-                                        { projects.public }
-                                    </ProjectListSection>
-
-                                    <ProjectListLabel htmlFor="private-projects">{ privateProjectsLabel }</ProjectListLabel>
-                                    <ProjectListSection id="private-projects">
-                                        { projects.private }
-                                    </ProjectListSection>
-                                </div>
-                            )}
-                            onFail={(
-                                <ProjectListMobile labelPublic={publicProjectsLabel} labelPrivate={privateProjectsLabel} selectedProject={selectedProject} />
-                            )}
-                        />
-
-                        <div
-                            className="flex flex-col grow-1 shrink-1 overflow-x-hidden"
-                        >
-                            <AnimatePresence mode="wait">
-                                <ProjectItem key={selectedProject} item={myProjects[selectedProject]} />
-                            </AnimatePresence>
+                            <p>
+                                { sectionSubtitle }
+                            </p>
                         </div>
-                    </div>
-                </ProjectListContext.Provider>
-            </Segment.Root>
+                    </Segment.Main>
+
+                    <ProjectListContext.Provider value={ctx}>
+                        <div className="flex flex-col lg:flex-row lg:flex-nowrap gap-8 w-full lg:w-[1024px] h-full">
+                            <Responsive breakpoint={Queries.IsDesktop}
+                                onMatch={(
+                                    <div className="w-1/4 h-full grow-0 shrink-0 flex flex-col gap-2 items-end pr-4 border-r-2 border-emerald-500 text-lg">
+                                        <ProjectListLabel htmlFor="public-projects">{ publicProjectsLabel }</ProjectListLabel>
+                                        <ProjectListSection id="public-projects">
+                                            { projects.public }
+                                        </ProjectListSection>
+
+                                        <ProjectListLabel htmlFor="private-projects">{ privateProjectsLabel }</ProjectListLabel>
+                                        <ProjectListSection id="private-projects">
+                                            { projects.private }
+                                        </ProjectListSection>
+                                    </div>
+                                )}
+                                onFail={(
+                                    <ProjectListMobile labelPublic={publicProjectsLabel} labelPrivate={privateProjectsLabel} selectedProject={selectedProject} />
+                                )}
+                            />
+
+                            <div
+                                className="flex flex-col grow-1 shrink-1 overflow-x-hidden"
+                            >
+                                <AnimatePresence mode="wait">
+                                    <ProjectItem key={selectedProject} item={myProjects[selectedProject]} />
+                                </AnimatePresence>
+                            </div>
+                        </div>
+                    </ProjectListContext.Provider>
+                </Segment.Root>
+            </div>
         </div>
     )
 }
