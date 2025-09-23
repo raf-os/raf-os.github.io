@@ -8,7 +8,9 @@ export default function ExperiencesPage() {
     )
 }
 
-type ExperienceItemProps = {}
+type ExperienceItemProps = {
+    title: string
+}
 
 function ExperienceItem() {
     return (
