@@ -77,7 +77,7 @@ export default function Exposition() {
     }, [isInView]);
 
     return (
-        <Segment.Root className="py-1 justify-center h-lvh">
+        <Segment.Root className="justify-center min-h-lvh">
             <Segment.Main className="justify-center grow-1 shrink-1">
                 <div
                     className="flex flex-col justify-center px-2 py-5 md:py-5 md:px-7 text-center bg-gray-800 rounded-lg shadow-lg"
