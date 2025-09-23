@@ -5,8 +5,8 @@ import { Provider as TooltipProvider } from "@radix-ui/react-tooltip";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  title: "Github Page",
-  description: "yes",
+  title: "Rafael's Page",
+  description: "My personal homepage.",
 };
 
 export default function RootLayout({
