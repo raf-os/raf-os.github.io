@@ -6,6 +6,7 @@ import Navbar from "@/components/layout/Navbar";
 import TitleScreen from "./sections/TitleScreen";
 import Exposition from "./sections/Exposition";
 import ProjectList from "./sections/ProjectList";
+import Footer from "./sections/Footer";
 import { GlobalAppContext, DefaultAppContext, type IGlobalAppContext } from "./GlobalContext";
 import DialogPortal from "@/components/layout/DialogPortal";
 import Separator from "@/components/layout/Separator";
@@ -52,6 +53,8 @@ export default function Home() {
 				<Separator className="mb-24" />
 
 				<ProjectList />
+
+				<Footer />
 
 				<DialogPortal />
 			</div>
